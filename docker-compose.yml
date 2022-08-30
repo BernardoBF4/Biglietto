@@ -1,0 +1,41 @@
+version: "3.3"
+services:
+  biglietto:
+    build:
+      context: .
+      dockerfile: ./devops/Dockerfile.local
+    ports:
+      - 80:8000
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - biglietto
+    tty: true
+    container_name: biglietto  
+  mysql_biglietto:
+    image: mariadb:10.3
+    entrypoint: docker-entrypoint.sh --sql-mode='STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+    ports:
+      - 3306:3306
+    networks:
+      - biglietto
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DATABASE=biglietto
+    container_name: mysql_biglietto
+  phpmyadmin_biglietto:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8181:80
+    networks:
+      - biglietto
+    environment:
+      PMA_HOST: mysql_biglietto
+      UPLOAD_LIMIT: 300M
+    container_name: phpmyadmin_biglietto
+networks:
+  biglietto:
+    external:
+      name: biglietto_network
