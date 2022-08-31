@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cms\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::as('auth.')->group(function () {
-  Route::get('login', fn () => view('cms.auth.login'))->name('login');
+  Route::get('login', [AuthController::class, 'getUserTheLoginView'])->name('login');
 });
