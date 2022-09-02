@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Cms\AuthController;
+use App\Http\Controllers\Authentication\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::as('auth.')->group(function () {
-  Route::get('login', [AuthController::class, 'getUserTheLoginView'])->name('login');
+  Route::get('login', [AuthController::class, 'getUserTheLoginView'])->name('get_login_view');
+  Route::prefix('auth')->group(function () {
+    Route::post('login', [AuthController::class, 'loginUser'])->name('log_user');
+  });
 });

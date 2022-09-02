@@ -1,6 +1,11 @@
 @extends('cms.layouts.app')
 @section('content')
 
-<h1>Olá, visitante</h1>
+<form action="/cms/auth/login" method="post">
+  @csrf
+  <input type="text" name="email">
+  <input type="password" name="password">
+  <input type="submit">
+</form>
 
 @endsection
