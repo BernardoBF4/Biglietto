@@ -15,11 +15,6 @@
     @if (session()->has('message'))
     <p>{{ session()->get('message') }}</p>
     @endif
-    <ul>
-      @foreach ($errors->all() as $error)
-      <li>{{ $error }}</li>
-      @endforeach
-    </ul>
   </form>
 </section>
 

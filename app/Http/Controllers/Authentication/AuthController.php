@@ -30,7 +30,7 @@ class AuthController extends Controller
 
       return redirect()->back()->with('message', 'Você está logado');
     } catch (Exception $e) {
-      return redirect()->back()->withErrors($e->getMessage());
+      return redirect()->back()->with('message', $e->getMessage());
     }
   }
 }
