@@ -1,0 +1,22 @@
+.login {
+  align-items: center;
+  background-color: #000508;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  &__form {
+    align-items: center;
+    background-color: $white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    justify-content: center;
+    padding: 20px 30px;
+    width: 400px;
+    & div,
+    & button {
+      margin-bottom: 20px;
+    }
+  }
+}
