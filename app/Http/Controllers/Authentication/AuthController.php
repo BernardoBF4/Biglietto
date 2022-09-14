@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Exception;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
+
   public function getUserTheLoginView()
   {
     return view('cms.auth.login');
@@ -17,14 +18,19 @@ class AuthController extends Controller
 
   public function loginUser(LoginUserRequest $request)
   {
-    $data = $request->validated();
-    $user = User::where('email', $data['email'])->first();
+    try {
+      $data = $request->validated();
+      $user = User::where('email', $data['email'])->first();
+      $auth = new AuthService($user, $data);
 
-    if (Hash::check($data['password'], $user->password)) {
+      $auth->redirectUserIfAlreadyLoggedIn();
+      $auth->redirectUserIfPasswordIsIncorrect();
+
       auth()->login($user);
-      return redirect()->back()->with('message', 'Você está logado');
-    }
 
-    return redirect()->back()->withErrors('message', 'Você não está logado');
+      return redirect()->back()->with('message', 'Você está logado');
+    } catch (Exception $e) {
+      return redirect()->back()->withErrors($e->getMessage());
+    }
   }
 }
