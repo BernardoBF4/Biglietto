@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class GroupsTest extends TestCase
 {
-  // use RefreshDatabase;
+  use RefreshDatabase;
 
   /** @test */
   public function a_logged_user_can_see_the_listing_of_groups()
@@ -20,14 +20,8 @@ class GroupsTest extends TestCase
     $groups = Group::factory(10)->create();
 
     $response = $this->get('/cms/groups');
-    $response->assertViewHas('groups', function ($groups) {
-      foreach ($groups as $group) {
-        if (!$groups->contains($group)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
+    foreach ($groups as $group) {
+      $response->assertSee($group->name);
+    }
   }
 }
