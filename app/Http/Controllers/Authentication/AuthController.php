@@ -28,7 +28,7 @@ class AuthController extends Controller
 
       auth()->login($user);
 
-      return redirect()->back()->with('message', 'Você está logado');
+      return redirect()->to(route('cms.groups.index'));
     } catch (Exception $e) {
       return redirect()->back()->with('message', $e->getMessage());
     }

@@ -5,13 +5,14 @@ namespace App\Services;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 
 class AuthService
 {
-  protected $user;
-  protected $data;
+  protected ?User $user;
+  protected array $data;
 
-  public function __construct(User $user, $data)
+  public function __construct(?User $user, array $data)
   {
     $this->user = $user;
     $this->data = $data;
@@ -20,7 +21,7 @@ class AuthService
   public function redirectUserIfAlreadyLoggedIn()
   {
     if (auth()->check()) {
-      throw new Exception('Você já está logado');
+      throw new Exception('Você já está logado.');
     }
   }
 

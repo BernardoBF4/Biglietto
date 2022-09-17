@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::as('auth.')->group(function () {
   Route::get('login', [AuthController::class, 'getUserTheLoginView'])->name('get_login_view');
-  Route::resources(['groups' => GroupsController::class]);
   Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'loginUser'])->name('log_user');
   });
 });
+
+Route::resources(['groups' => GroupsController::class]);

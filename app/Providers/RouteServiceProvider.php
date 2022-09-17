@@ -38,6 +38,7 @@ class RouteServiceProvider extends ServiceProvider
 
       Route::middleware('cms')
         ->prefix('cms')
+        ->as('cms.')
         ->group(base_path('routes/cms.php'));
     });
   }

@@ -24,17 +24,17 @@ class LoginUserRequest extends FormRequest
   public function rules()
   {
     return [
-      'email' => 'string|email|exists:users',
-      'password' => 'string',
+      'email' => 'required|email|exists:users',
+      'password' => 'required',
     ];
   }
 
   public function messages()
   {
     return [
-      '*.string' => 'Este campo precisa ser do tipo string',
-      'email.email' => 'Por favor, digite um e-mail válido',
-      'email.exists' => 'Este e-mail não existe em nosso sistema',
+      '*.required' => 'Este campo é obirgatório.',
+      'email.email' => 'Por favor, digite um e-mail válido.',
+      'email.exists' => 'Este e-mail não existe em nosso sistema.',
     ];
   }
 }

@@ -2,7 +2,7 @@
 @section('content')
 
 <section class="login">
-  <form action="{{ route('auth.log_user') }}" class="login__form" method="post">
+  <form action="{{ route('cms.auth.log_user') }}" class="login__form" method="post">
     <div>
       <label for="name">E-mail</label>
       <input id="name" name="email" type="email">
@@ -14,6 +14,13 @@
     <button class="ui-button" type="submit">Logar</button>
     @if (session()->has('message'))
     <p>{{ session()->get('message') }}</p>
+    @endif
+    @if ($errors->any())
+    <ul>
+      @foreach ($errors->all() as $error)
+      <li>{{ $error }}</li>
+      @endforeach
+    </ul>
     @endif
   </form>
 </section>

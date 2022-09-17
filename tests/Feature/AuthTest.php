@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-  // use RefreshDatabase;
+  use RefreshDatabase, WithFaker;
 
   /** @test */
   public function um_usuario_pode_acessar_a_pagina_de_login()
@@ -31,8 +31,7 @@ class AuthTest extends TestCase
 
     $response = $this->post('/cms/auth/login', $data);
 
-    $response->assertSessionHas('message', 'Você está logado');
-    $response->assertStatus(302);
+    $response->assertRedirect(route('cms.groups.index'));
   }
 
   /** @test */
@@ -62,7 +61,20 @@ class AuthTest extends TestCase
     auth()->login($user);
     $response = $this->post('/cms/auth/login', $data);
 
-    $response->assertSessionHas('message', 'Você já está logado');
+    $response->assertSessionHas('message', 'Você já está logado.');
+    $response->assertStatus(302);
+  }
+
+  /** @test */
+  public function a_user_is_redirected_if_not_found()
+  {
+    // $this->withoutExceptionHandling();
+
+    $password = Str::random(10);
+    $data = ['email' => $this->faker->safeEmail(), 'password' => $password];
+
+    $response = $this->post('/cms/auth/login', $data);
+
     $response->assertStatus(302);
   }
 }
