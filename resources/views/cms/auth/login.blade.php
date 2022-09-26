@@ -1,5 +1,5 @@
 @extends('cms.layouts.app')
-@section('content')
+@section('body')
 
 <section class="login">
   <form action="{{ route('cms.auth.log_user') }}" class="login__form" method="post">

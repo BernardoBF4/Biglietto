@@ -1,0 +1,10 @@
+.header {
+  @include font(16);
+  align-items: center;
+  background-color: $primary;
+  color: $font-color;
+  display: flex;
+  font-weight: bold;
+  height: 40px;
+  padding-inline: 10px;
+}

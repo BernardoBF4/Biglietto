@@ -1,7 +1,9 @@
-@import "partials/mixins";
-@import "partials/variables";
+@import "../partials/mixins";
+@import "../partials/variables";
 @import "ui";
 @import "login";
+@import "menu";
+@import "groups";
 
 html {
   scroll-behavior: smooth;
