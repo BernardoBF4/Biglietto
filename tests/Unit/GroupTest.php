@@ -10,18 +10,14 @@ use Tests\TestCase;
 
 class GroupTest extends TestCase
 {
-  use RefreshDatabase, WithFaker;
+  use WithFaker;
 
   /** @test */
   public function a_group_has_many_modules()
   {
-    $modules = Modules::factory(10)->create();
-    $group = Group::factory()->create();
+    $group = Group::factory()->has(Modules::factory()->count(3), 'modules')->create();
 
-    $group->modules()->attach($modules);
-
-    foreach ($modules as $module) {
-      $this->assertInstanceOf(Modules::class, $group->modules()->where('id', $module->id)->first());
-    }
+    $this->assertInstanceOf(Group::class, $group->first());
+    $this->assertInstanceOf(Modules::class, $group->modules->first());
   }
 }
