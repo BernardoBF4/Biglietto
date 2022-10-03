@@ -28,4 +28,9 @@ class Group extends Model
     'created_at',
     'updated_at',
   ];
+
+  public function modules()
+  {
+    return $this->belongsToMany(Modules::class, 'group_modules', 'group_id', 'module_id');
+  }
 }
