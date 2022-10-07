@@ -32,8 +32,8 @@ class GroupRequest extends FormRequest
       'modules' => [
         'required',
         function ($attribute, $value, $fail) {
-          foreach ($value as $module) {
-            if (!($module instanceof Modules)) {
+          foreach ($value as $module_id) {
+            if (!Modules::where('id', $module_id)->count()) {
               $fail('Os módulos devem ser módulos válidos.');
             }
           }

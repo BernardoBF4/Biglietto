@@ -81,9 +81,11 @@ class GroupsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(GroupRequest $request, Group $group)
   {
-    //
+    $result = $this->group_service->updateAGroupWith($request->all(), $group);
+
+    return redirect()->back()->with('message', $result['msg']);
   }
 
   /**
