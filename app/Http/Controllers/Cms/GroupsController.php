@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GroupRequest;
+use App\Models\Group;
 use App\Services\GroupsService;
 use Illuminate\Http\Request;
 
@@ -43,9 +45,11 @@ class GroupsController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(GroupRequest $request)
   {
-    //
+    $result = $this->group_service->createGroupWith($request->all());
+
+    return redirect()->back()->with('message', $result['msg']);
   }
 
   /**
