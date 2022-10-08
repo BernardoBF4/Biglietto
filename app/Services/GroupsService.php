@@ -49,4 +49,23 @@ class GroupsService
       return ['msg' => $error->getMessage()];
     }
   }
+
+  public function deleteGroup($group_id)
+  {
+    try {
+      DB::beginTransaction();
+
+      $group = Group::where('id', $group_id)->first();
+
+      if (isset($group)) {
+        $group->delete();
+      }
+
+      DB::commit();
+      return ['msg' => 'O group foi deletado com sucesso!'];
+    } catch (\Throwable $error) {
+      DB::rollBack();
+      return ['msg' => $error->getMessage()];
+    }
+  }
 }

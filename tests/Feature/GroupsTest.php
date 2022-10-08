@@ -59,4 +59,17 @@ class GroupsTest extends TestCase
 
     $response->assertSessionHas('message', 'O grupo foi atualziado com sucesso!');
   }
+
+  /** @test */
+  public function a_logged_user_can_exclude_a_group()
+  {
+    $this->withoutExceptionHandling();
+    $this->signIn();
+
+    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+
+    $response = $this->delete(route('cms.groups.destroy', ['group' => $group->id]));
+
+    $response->assertSessionHas('message', 'O group foi deletado com sucesso!');
+  }
 }
