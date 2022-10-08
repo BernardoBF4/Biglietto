@@ -38,7 +38,7 @@ class GroupsTest extends TestCase
 
     $response = $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
 
-    $response->assertSessionHas('message', 'Grupo criado com sucesso!');
+    $response->assertSessionHas('message', trans('cms.groups.success_create'));
   }
 
   /** @test */
@@ -56,7 +56,7 @@ class GroupsTest extends TestCase
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->id]), $group_data);
 
-    $response->assertSessionHas('message', 'O grupo foi atualziado com sucesso!');
+    $response->assertSessionHas('message', trans('cms.groups.success_update'));
   }
 
   /** @test */
@@ -69,6 +69,6 @@ class GroupsTest extends TestCase
 
     $response = $this->delete(route('cms.groups.destroy', ['group' => $group->id]));
 
-    $response->assertSessionHas('message', 'O group foi deletado com sucesso!');
+    $response->assertSessionHas('message', trans('cms.groups.success_delete'));
   }
 }

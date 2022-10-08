@@ -25,7 +25,7 @@ class GroupsService
       $group->modules()->attach($modules_id);
 
       DB::commit();
-      return ['msg' => 'Grupo criado com sucesso!'];
+      return ['msg' => trans('cms.groups.success_create')];
     } catch (\Throwable $error) {
       DB::rollBack();
       return ['msg' => $error->getMessage()];
@@ -43,7 +43,7 @@ class GroupsService
       $group->modules()->sync($modules_ids);
 
       DB::commit();
-      return ['msg' => 'O grupo foi atualziado com sucesso!'];
+      return ['msg' => trans('cms.groups.success_update')];
     } catch (\Throwable $error) {
       DB::rollBack();
       return ['msg' => $error->getMessage()];
@@ -62,7 +62,7 @@ class GroupsService
       }
 
       DB::commit();
-      return ['msg' => 'O group foi deletado com sucesso!'];
+      return ['msg' => trans('cms.groups.success_delete')];
     } catch (\Throwable $error) {
       DB::rollBack();
       return ['msg' => $error->getMessage()];
