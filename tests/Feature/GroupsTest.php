@@ -69,7 +69,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_group_group_cannot_be_created_without_modules()
+  public function a_group_cannot_be_created_without_modules()
   {
     $this->signIn();
 
@@ -78,8 +78,8 @@ class GroupsTest extends TestCase
       'status' => $this->faker->boolean()
     ];
 
-    $response = $this->post(route('cms.groups.store'), $group_data);
+    $this->post(route('cms.groups.store'), $group_data);
 
-    $response->assertSessionHasErrors(['modules']);
+    $this->assertEquals(session('errors')->messages()['modules'][0], 'O grupo precisa de pelo menos um módulo.');
   }
 }
