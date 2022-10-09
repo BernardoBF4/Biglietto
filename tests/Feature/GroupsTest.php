@@ -15,8 +15,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function a_logged_user_can_see_the_listing_of_groups()
   {
-    $this->withoutExceptionHandling();
-    $this->signIn();
+    $this->withoutExceptionHandling()->signIn();
 
     $group = Group::factory()->create();
 
@@ -27,8 +26,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function a_logged_user_can_create_a_group()
   {
-    $this->withoutExceptionHandling();
-    $this->signIn();
+    $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
       'name' => $this->faker->word(),
@@ -44,8 +42,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function a_logged_user_can_update_a_group()
   {
-    $this->withoutExceptionHandling();
-    $this->signIn();
+    $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
       'name' => $this->faker->word(),
@@ -62,8 +59,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function a_logged_user_can_exclude_a_group()
   {
-    $this->withoutExceptionHandling();
-    $this->signIn();
+    $this->withoutExceptionHandling()->signIn();
 
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 

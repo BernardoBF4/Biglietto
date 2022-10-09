@@ -14,5 +14,7 @@ abstract class TestCase extends BaseTestCase
   {
     $user = $user ?: User::factory()->withPassword(Str::random(10))->create();
     $this->actingAs($user);
+
+    return $this;
   }
 }
