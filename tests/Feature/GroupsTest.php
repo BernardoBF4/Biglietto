@@ -71,4 +71,19 @@ class GroupsTest extends TestCase
 
     $response->assertSessionHas('message', trans('cms.groups.success_delete'));
   }
+
+  /** @test */
+  public function a_group_group_cannot_be_created_without_modules()
+  {
+    $this->signIn();
+
+    $group_data = [
+      'name' => $this->faker->word(),
+      'status' => $this->faker->boolean()
+    ];
+
+    $response = $this->post(route('cms.groups.store'), $group_data);
+
+    $response->assertSessionHasErrors(['modules']);
+  }
 }
