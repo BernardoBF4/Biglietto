@@ -61,9 +61,9 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $groups_id = Group::factory(2)->has(Modules::factory(), 'modules')->create()->pluck('id');
 
-    $response = $this->delete(route('cms.groups.destroy', ['group' => $group->id]));
+    $response = $this->delete(route('cms.groups.destroy', ['group' => $groups_id]));
 
     $response->assertSessionHas('message', trans('cms.groups.success_delete'));
   }

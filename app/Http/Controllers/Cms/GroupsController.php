@@ -94,9 +94,9 @@ class GroupsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($groups_id)
   {
-    $result = $this->group_service->deleteGroup($id);
+    $result = $this->group_service->deleteGroup($groups_id);
 
     return redirect()->back()->with('message', $result['msg']);
   }
