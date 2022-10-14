@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Cms;
 
 use App\Models\Group;
 use App\Models\Modules;
