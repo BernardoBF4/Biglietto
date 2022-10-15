@@ -29,7 +29,7 @@ class AuthTest extends TestCase
     $user = User::factory()->withPassword($password)->create();
     $data = ['email' => $user->email, 'password' => $password];
 
-    $response = $this->post('/cms/auth/login', $data);
+    $response = $this->post(route('cms.auth.log_user'), $data);
 
     $response->assertRedirect(route('cms.groups.index'));
   }
