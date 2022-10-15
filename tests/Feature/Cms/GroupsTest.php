@@ -40,6 +40,22 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
+  public function when_a_logged_user_creates_a_group_the_data_is_persisted_to_the_database()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $group_data = [
+      'name' => $this->faker->word(),
+      'status' => $this->faker->boolean(),
+    ];
+    $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
+
+    $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
+
+    $this->assertDatabaseHas('groups', $group_data);
+  }
+
+  /** @test */
   public function a_logged_user_can_update_a_group()
   {
     $this->withoutExceptionHandling()->signIn();
