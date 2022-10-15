@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Modules;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class GroupsTest extends TestCase
@@ -53,6 +54,8 @@ class GroupsTest extends TestCase
     $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
 
     $this->assertDatabaseHas('groups', $group_data);
+    $this->assertDatabaseCount('modules', 1);
+    $this->assertDatabaseCount('group_modules', 1);
   }
 
   /** @test */
@@ -63,13 +66,31 @@ class GroupsTest extends TestCase
     $group_data = [
       'name' => $this->faker->word(),
       'status' => $this->faker->boolean(),
-      'modules' => Modules::factory()->create()->pluck('id')
+      'modules' => Modules::factory(1)->create()->pluck('id')
     ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->id]), $group_data);
 
     $response->assertSessionHas('message', trans('cms.groups.success_update'));
+  }
+
+  /** @test */
+  public function when_a_logged_user_updates_a_group_the_data_is_persisted_to_the_database()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $group_data = [
+      'name' => $this->faker->word(),
+      'status' => $this->faker->boolean(),
+    ];
+    $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
+    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+
+    $this->patch(route('cms.groups.update', ['group' => $group->id]), array_merge($group_data, $modules));
+
+    $this->assertDatabaseHas('groups', $group_data);
+    $this->assertDatabaseMissing('groups', ['name' => $group->name, 'status' => $group->status]);
   }
 
   /** @test */
