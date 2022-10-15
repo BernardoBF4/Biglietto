@@ -6,7 +6,6 @@ use App\Models\Group;
 use App\Models\Modules;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class GroupsTest extends TestCase
@@ -94,7 +93,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_can_exclude_a_group()
+  public function a_logged_user_can_exclude_multiple_groups()
   {
     $this->withoutExceptionHandling()->signIn();
 
