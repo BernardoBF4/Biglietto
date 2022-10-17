@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Cms\GroupsController;
+use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,4 @@ Route::as('auth.')->group(function () {
 });
 
 Route::resources(['groups' => GroupsController::class]);
+Route::resources(['users' => UsersController::class]);
