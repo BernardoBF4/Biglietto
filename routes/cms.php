@@ -4,6 +4,7 @@ use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Cms\GroupsController;
 use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Middleware\AuthMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,7 @@ Route::as('auth.')->group(function () {
   });
 });
 
-Route::resources(['groups' => GroupsController::class]);
-Route::resources(['users' => UsersController::class]);
+Route::middleware(AuthMiddleware::class)->group(function () {
+  Route::resources(['groups' => GroupsController::class]);
+  Route::resources(['users' => UsersController::class]);
+});
