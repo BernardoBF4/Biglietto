@@ -13,7 +13,17 @@ class GroupsTest extends TestCase
   use WithFaker, RefreshDatabase;
 
   /** @test */
-  public function a_logged_user_can_see_the_listing_of_groups()
+  public function a_user_is_redirected_if_not_authenticated()
+  {
+    $this->withoutExceptionHandling();
+
+    $response = $this->get(route('cms.groups.index'));
+
+    $response->assertRedirect();
+  }
+
+  /** @test */
+  public function a_user_can_see_the_listing_of_groups()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -24,7 +34,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_can_create_a_group()
+  public function a_user_can_create_a_group()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -40,7 +50,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_a_logged_user_creates_a_group_the_data_is_persisted_to_the_database()
+  public function when_a_user_creates_a_group_the_data_is_persisted_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -58,7 +68,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_can_update_a_group()
+  public function a_user_can_update_a_group()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -75,7 +85,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_a_logged_user_updates_a_group_the_data_is_persisted_to_the_database()
+  public function when_a_user_updates_a_group_the_data_is_persisted_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -93,7 +103,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_can_exclude_multiple_groups()
+  public function a_user_can_exclude_multiple_groups()
   {
     $this->withoutExceptionHandling()->signIn();
 

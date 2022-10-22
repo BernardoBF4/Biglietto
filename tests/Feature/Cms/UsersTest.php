@@ -24,7 +24,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_can_create_another_user()
+  public function a_user_can_create_another_user()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -43,7 +43,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_logged_user_receives_an_error_if_the_passwords_dont_match()
+  public function a_user_receives_an_error_if_the_passwords_dont_match()
   {
     $this->withoutExceptionHandling()->signIn();
 

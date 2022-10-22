@@ -13,7 +13,7 @@ class AuthTest extends TestCase
   use RefreshDatabase, WithFaker;
 
   /** @test */
-  public function um_usuario_pode_acessar_a_pagina_de_login()
+  public function a_user_can_access_the_login_page()
   {
     $this->withoutExceptionHandling();
 
@@ -21,7 +21,7 @@ class AuthTest extends TestCase
   }
 
   /** @test */
-  public function um_usuario_pode_fazer_login()
+  public function a_user_can_login()
   {
     $this->withoutExceptionHandling();
 
@@ -35,7 +35,7 @@ class AuthTest extends TestCase
   }
 
   /** @test */
-  public function um_usuario_nao_pode_fazer_login_com_senha_errada()
+  public function a_user_cant_login_with_wrong_password()
   {
     $this->withoutExceptionHandling();
 
@@ -50,7 +50,7 @@ class AuthTest extends TestCase
   }
 
   /** @test */
-  public function um_usuario_recebe_mensagem_de_erro_se_ja_estiver_logado()
+  public function a_user_receives_an_error_message_if_already_logged()
   {
     $this->withoutExceptionHandling();
 
