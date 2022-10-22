@@ -14,6 +14,16 @@ class UsersTest extends TestCase
   use RefreshDatabase, WithFaker;
 
   /** @test */
+  public function a_user_is_redirected_if_not_authenticated()
+  {
+    $this->withoutExceptionHandling();
+
+    $response = $this->get(route('cms.users.index'));
+
+    $response->assertRedirect();
+  }
+
+  /** @test */
   public function a_logged_user_can_create_another_user()
   {
     $this->withoutExceptionHandling()->signIn();

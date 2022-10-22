@@ -16,7 +16,8 @@ class UsersController extends Controller
    */
   public function index()
   {
-    //
+    $groups = [];
+    return view('cms.groups.index', compact('groups'));
   }
 
   /**
@@ -38,7 +39,7 @@ class UsersController extends Controller
   public function store(UserRequest $request)
   {
     $user_service = new UsersService($request->all(), null);
-    $result = $user_service->createUser($request->all());
+    $result = $user_service->createUser();
     return redirect()->back()->with('message', $result['msg']);
   }
 
