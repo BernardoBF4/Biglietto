@@ -39,7 +39,7 @@ class UsersController extends Controller
   public function store(UserRequest $request)
   {
     $user_service = new UsersService($request->all(), null);
-    $result = $user_service->createUser();
+    $result = $user_service->createNewUser();
     return redirect()->back()->with('message', $result['msg']);
   }
 

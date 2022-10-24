@@ -43,7 +43,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_user_receives_an_error_if_the_passwords_dont_match()
+  public function a_user_receives_an_error_if_the_passwords_dont_match_when_creating_a_user()
   {
     $this->withoutExceptionHandling()->signIn();
 
