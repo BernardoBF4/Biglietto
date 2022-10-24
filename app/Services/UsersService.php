@@ -18,7 +18,7 @@ class UsersService
     $this->data = $data;
   }
 
-  public function createNewUser()
+  public function createCMSUser()
   {
     try {
       $this->__checkIfPasswordsMatch();

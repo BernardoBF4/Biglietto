@@ -38,8 +38,8 @@ class UsersController extends Controller
    */
   public function store(UserRequest $request)
   {
-    $user_service = new UsersService($request->all(), null);
-    $result = $user_service->createNewUser();
+    $users_service = new UsersService($request->all(), null);
+    $result = $users_service->createCMSUser();
     return redirect()->back()->with('message', $result['msg']);
   }
 
