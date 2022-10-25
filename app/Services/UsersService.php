@@ -4,17 +4,16 @@ namespace App\Services;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsersService
 {
-  private ?User $user;
+  private ?int $user_id;
   private array $data;
 
-  public function __construct(array $data, ?User $user)
+  public function __construct(array $data, ?int $user_id)
   {
-    $this->user = $user;
+    $this->user_id = $user_id;
     $this->data = $data;
   }
 
@@ -31,6 +30,32 @@ class UsersService
     } catch (\Throwable $th) {
       return ['msg' => $th->getMessage()];
     }
+  }
+
+  public function updateCMSUser()
+  {
+    try {
+      if (array_key_exists('password', $this->data)) {
+        $this->__checkIfPasswordsMatch();
+        $this->data['password'] = Hash::make($this->data['password']);
+      }
+
+      $user = $this->__getUserOrFail();
+      $user->update($this->data);
+
+      return ['msg' => trans('cms.users.success_update')];
+    } catch (\Throwable $th) {
+      return ['msg' => $th->getMessage()];
+    }
+  }
+
+  private function __getUserOrFail()
+  {
+    $user = User::find($this->user_id);
+    if ($user instanceof User) {
+      return $user;
+    }
+    throw new Exception(trans('cms.users.error_user_not_found'));
   }
 
   private function __checkIfPasswordsMatch()

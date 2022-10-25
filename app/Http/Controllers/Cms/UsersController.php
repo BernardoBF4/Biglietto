@@ -72,9 +72,11 @@ class UsersController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(UserRequest $request, $id)
   {
-    //
+    $users_service = new UsersService($request->all(), $id);
+    $result = $users_service->updateCMSUser();
+    return redirect()->back()->with('message', $result['msg']);
   }
 
   /**

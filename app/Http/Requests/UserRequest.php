@@ -23,12 +23,23 @@ class UserRequest extends FormRequest
    */
   public function rules()
   {
-    return [
-      'email' => 'required|string|email|unique:users,email',
-      'name' => 'required|string|max:255',
-      'password' => 'required|string|min:6|max:12',
-      'password_confirmation' => 'required|string|min:6|max:12'
-    ];
+    if ($this->isMethod('POST')) {
+      $rules = [
+        'email' => 'required|string|email|unique:users,email',
+        'name' => 'required|string|max:255',
+        'password' => 'required|string|min:6|max:12',
+        'password_confirmation' => 'required|string|min:6|max:12'
+      ];
+    } else {
+      $rules = [
+        'email' => 'required|string|email|unique:users,email',
+        'name' => 'required|string|max:255',
+        'password' => 'required_with:password_confirmation|string|min:6|max:12',
+        'password_confirmation' => 'required_with:password|string|min:6|max:12'
+      ];
+    }
+
+    return $rules;
   }
 
   public function messages()
