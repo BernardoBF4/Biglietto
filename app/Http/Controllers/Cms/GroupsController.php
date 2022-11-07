@@ -91,7 +91,7 @@ class GroupsController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param  array  $groups_id
    * @return \Illuminate\Http\Response
    */
   public function destroy($groups_id)
