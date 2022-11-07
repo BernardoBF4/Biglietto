@@ -136,4 +136,16 @@ class UsersTest extends TestCase
 
     $response->assertSessionHas('message', trans('cms.users.error_passwords'));
   }
+
+  /** @test */
+  public function users_can_be_excluded()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $users_id = User::factory(2)->withPassword($this->faker->password(6, 12))->create()->pluck('id');
+
+    $response = $this->delete(route('cms.users.destroy', $users_id));
+
+    $response->assertSessionHas('message', trans('cms.users.success_delete'));
+  }
 }

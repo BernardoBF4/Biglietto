@@ -38,7 +38,7 @@ class UsersController extends Controller
    */
   public function store(UserRequest $request)
   {
-    $users_service = new UsersService($request->all(), null);
+    $users_service = new UsersService($request->all(), null, null);
     $result = $users_service->createCMSUser();
     return redirect()->back()->with('message', $result['msg']);
   }
@@ -74,7 +74,7 @@ class UsersController extends Controller
    */
   public function update(UserRequest $request, $id)
   {
-    $users_service = new UsersService($request->all(), $id);
+    $users_service = new UsersService($request->all(), $id, null);
     $result = $users_service->updateCMSUser();
     return redirect()->back()->with('message', $result['msg']);
   }
@@ -82,11 +82,13 @@ class UsersController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param  string  $users_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($users_id)
   {
-    //
+    $users_service = new UsersService(null, null, $users_id);
+    $result = $users_service->deleteCMSUsers();
+    return redirect()->back()->with('message', $result['msg']);
   }
 }

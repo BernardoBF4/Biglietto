@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Hash;
 class UsersService
 {
   private ?int $user_id;
-  private array $data;
+  private ?array $data;
+  private ?string $users_to_be_deleted;
 
-  public function __construct(array $data, ?int $user_id)
+  public function __construct(?array $data, ?int $user_id, ?string $users_to_be_deleted)
   {
     $this->user_id = $user_id;
     $this->data = $data;
+    $this->users_to_be_deleted = $users_to_be_deleted;
   }
 
   public function createCMSUser()
@@ -47,6 +49,13 @@ class UsersService
     } catch (\Throwable $th) {
       return ['msg' => $th->getMessage()];
     }
+  }
+
+  public function deleteCMSUsers()
+  {
+    User::whereIn('id', json_decode($this->users_to_be_deleted))->delete();
+
+    return ['msg' => trans('cms.users.success_delete')];
   }
 
   private function __getUserOrFail()
