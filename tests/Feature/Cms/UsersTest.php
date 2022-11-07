@@ -25,7 +25,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_user_can_create_another_user()
+  public function a_user_can_be_created()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -44,7 +44,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_user_receives_an_error_if_the_passwords_dont_match_when_creating_a_user()
+  public function if_passwords_dont_match_when_creating_a_user_an_error_is_returned()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -62,7 +62,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_user_can_update_another_user()
+  public function a_user_can_be_updated()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -82,7 +82,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function the_user_receives_an_error_if_user_is_not_found()
+  public function if_the_user_isnt_found_an_error_is_returned()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -102,7 +102,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function the_user_can_update_a_user_without_updating_the_password()
+  public function a_user_can_be_updated_without_updating_its_password()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -119,7 +119,7 @@ class UsersTest extends TestCase
   }
 
   /** @test */
-  public function a_user_receives_an_error_if_the_passwords_dont_match_when_updating_a_user()
+  public function if_passwords_dont_match_when_updating_a_user_an_error_is_returned()
   {
     $this->withoutExceptionHandling()->signIn();
 
