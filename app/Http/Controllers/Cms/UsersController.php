@@ -16,8 +16,6 @@ class UsersController extends Controller
    */
   public function index()
   {
-    $groups = [];
-    return view('cms.groups.index', compact('groups'));
   }
 
   /**
