@@ -13,7 +13,7 @@ class GroupsTest extends TestCase
   use WithFaker, RefreshDatabase;
 
   /** @test */
-  public function a_user_is_redirected_if_not_authenticated()
+  public function unauthenticated_users_are_redirected()
   {
     $this->withoutExceptionHandling();
 
@@ -34,7 +34,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_user_can_create_a_group()
+  public function a_group_can_be_created()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -50,7 +50,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_a_user_creates_a_group_the_data_is_persisted_to_the_database()
+  public function creating_a_group_persists_its_data_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -68,7 +68,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_user_can_update_a_group()
+  public function a_group_can_be_updated()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -85,7 +85,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_a_user_updates_a_group_the_data_is_persisted_to_the_database()
+  public function when_a_group_is_updated_its_data_is_persisted_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -103,7 +103,7 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_user_can_exclude_multiple_groups()
+  public function groups_can_be_excluded()
   {
     $this->withoutExceptionHandling()->signIn();
 

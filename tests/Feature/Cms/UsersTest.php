@@ -15,7 +15,7 @@ class UsersTest extends TestCase
   use RefreshDatabase, WithFaker;
 
   /** @test */
-  public function a_user_is_redirected_if_not_authenticated()
+  public function unauthenticated_users_are_redirected()
   {
     $this->withoutExceptionHandling();
 
