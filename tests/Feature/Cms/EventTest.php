@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class EventTest extends TestCase
 {
-  use WithFaker, RefreshDatabase;
+  use WithFaker;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
@@ -36,6 +36,23 @@ class EventTest extends TestCase
     $response = $this->post(route('cms.events.store', $event_data));
 
     $response->assertSessionHas('message', trans('cms.events.success_create'));
+  }
+
+  /** @test */
+  public function when_an_event_is_created_its_data_is_persited_to_the_database()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $event_data = [
+      'status' => $this->faker->boolean(),
+      'title' => $this->faker->name(),
+      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+    ];
+
+    $this->post(route('cms.events.store', $event_data));
+
+    $this->assertDatabaseHas('events', $event_data);
   }
 
   /** @test */
