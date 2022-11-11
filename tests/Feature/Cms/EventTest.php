@@ -39,7 +39,7 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function an_event_cannot_be_created_with_end_date_being_small_than_start_date()
+  public function an_event_cannot_be_created_with_end_date_being_smaller_than_start_date()
   {
     $this->signIn();
 
