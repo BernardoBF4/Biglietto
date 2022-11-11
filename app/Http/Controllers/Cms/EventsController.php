@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequest;
 use App\Services\EventsService;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class EventsController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(EventRequest $request)
   {
     $event_service = new EventsService($request->all());
     $result = $event_service->createEvent();

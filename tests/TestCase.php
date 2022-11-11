@@ -17,4 +17,10 @@ abstract class TestCase extends BaseTestCase
 
     return $this;
   }
+
+  public function checkIfSessionErrorMatchesString($error_index, $string)
+  {
+    $error_message = session('errors')->messages()[$error_index][0];
+    $this->assertEquals($error_message, $string);
+  }
 }
