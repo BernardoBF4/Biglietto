@@ -37,7 +37,7 @@ class UsersController extends Controller
   public function store(UserRequest $request)
   {
     $users_service = new UsersService($request->all(), null, null);
-    $result = $users_service->createCMSUser();
+    $result = $users_service->create();
     return redirect()->back()->with('message', $result['msg']);
   }
 
@@ -73,7 +73,7 @@ class UsersController extends Controller
   public function update(UserRequest $request, $id)
   {
     $users_service = new UsersService($request->all(), $id, null);
-    $result = $users_service->updateCMSUser();
+    $result = $users_service->update();
     return redirect()->back()->with('message', $result['msg']);
   }
 
@@ -86,7 +86,7 @@ class UsersController extends Controller
   public function destroy($users_id)
   {
     $users_service = new UsersService(null, null, $users_id);
-    $result = $users_service->deleteCMSUsers();
+    $result = $users_service->delete();
     return redirect()->back()->with('message', $result['msg']);
   }
 }

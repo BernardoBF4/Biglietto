@@ -5,8 +5,9 @@ namespace App\Services;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use App\Interfaces\CRUD;
 
-class UsersService
+class UsersService implements CRUD
 {
   private ?int $user_id;
   private ?array $data;
@@ -19,7 +20,7 @@ class UsersService
     $this->users_to_be_deleted = $users_to_be_deleted;
   }
 
-  public function createCMSUser()
+  public function create()
   {
     try {
       $this->__checkIfPasswordsMatch();
@@ -34,7 +35,7 @@ class UsersService
     }
   }
 
-  public function updateCMSUser()
+  public function update()
   {
     try {
       if (array_key_exists('password', $this->data)) {
@@ -51,7 +52,7 @@ class UsersService
     }
   }
 
-  public function deleteCMSUsers()
+  public function delete()
   {
     User::whereIn('id', json_decode($this->users_to_be_deleted))->delete();
 

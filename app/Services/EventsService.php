@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Event;
+use App\Interfaces\CRUD;
 use Exception;
 
-class EventsService
+class EventsService implements CRUD
 {
   private ?array $data;
   private ?int $event_id;
@@ -18,13 +19,13 @@ class EventsService
     $this->events_to_be_deleted = $events_to_be_deleted;
   }
 
-  public function createEvent()
+  public function create()
   {
     Event::create($this->data);
     return ['msg' => trans('cms.events.success_create')];
   }
 
-  public function updateEvent()
+  public function update()
   {
     try {
       $event = $this->__findEventOrFail();
@@ -35,7 +36,7 @@ class EventsService
     }
   }
 
-  public function deleteEvent()
+  public function delete()
   {
     Event::whereIn('id', json_decode($this->events_to_be_deleted))->delete();
 

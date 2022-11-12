@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Group;
+use App\Interfaces\CRUD;
 use Exception;
 
-class GroupsService
+class GroupsService implements CRUD
 {
   private ?array $data;
   private ?int $group_id;

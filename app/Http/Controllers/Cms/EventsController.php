@@ -38,7 +38,7 @@ class EventsController extends Controller
   public function store(EventRequest $request)
   {
     $event_service = new EventsService($request->all(), null, null);
-    $result = $event_service->createEvent();
+    $result = $event_service->create();
     return redirect()->back()->with('message', $result['msg']);
   }
 
@@ -74,7 +74,7 @@ class EventsController extends Controller
   public function update(EventRequest $request, $id)
   {
     $event_service = new EventsService($request->all(), $id, null);
-    $result = $event_service->updateEvent();
+    $result = $event_service->update();
     return redirect()->back()->with('message', $result['msg']);
   }
 
@@ -87,7 +87,7 @@ class EventsController extends Controller
   public function destroy($events_id)
   {
     $event_service = new EventsService(null, null, $events_id);
-    $result = $event_service->deleteEvent();
+    $result = $event_service->delete();
     return redirect()->back()->with('message', $result['msg']);
   }
 }
