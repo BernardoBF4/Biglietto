@@ -20,7 +20,7 @@ class ModulesFactory extends Factory
     return [
       'name' => fake()->word(),
       'status' => fake()->boolean(),
-      'father_id' => rand(0, 1) ? Modules::factory()->create()->id : null,
+      'father_id' => null,
     ];
   }
 }
