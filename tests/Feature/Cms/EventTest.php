@@ -91,4 +91,22 @@ class EventTest extends TestCase
 
     $response->assertSessionHas('message', trans('cms.events.success_update'));
   }
+
+  /** @test */
+  public function when_updating_an_event_if_not_found_an_error_is_returned()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $event_data = [
+      'status' => $this->faker->boolean(),
+      'title' => $this->faker->name(),
+      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+    ];
+    $event = Event::factory()->create();
+
+    $response = $this->patch(route('cms.events.update', $event->id + 1), $event_data);
+
+    $response->assertSessionHas('message', trans('cms.events.error_not_found'));
+  }
 }
