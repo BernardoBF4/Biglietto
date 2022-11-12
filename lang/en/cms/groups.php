@@ -6,4 +6,6 @@ return [
   'success_update' => 'O grupo foi atualizado com sucesso!',
   'success_delete' => 'O group foi deletado com sucesso!',
 
+  'error_not_found' => 'Grupo não encontrado.',
+
 ];

@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 
 class GroupsController extends Controller
 {
-  protected $group_service;
-
-  public function __construct(GroupsService $group_service)
-  {
-    $this->group_service = $group_service;
-  }
-
   /**
    * Display a listing of the resource.
    *
@@ -24,7 +17,7 @@ class GroupsController extends Controller
    */
   public function index()
   {
-    $groups = $this->group_service->listAll();
+    $groups = (new GroupsService(null, null, null))->listAll();
 
     return view('cms.groups.index', compact('groups'));
   }
@@ -47,8 +40,7 @@ class GroupsController extends Controller
    */
   public function store(GroupRequest $request)
   {
-    $result = $this->group_service->createGroupWith($request->all());
-
+    $result = (new GroupsService($request->all(), null, null))->create();
     return redirect()->back()->with('message', $result['msg']);
   }
 
@@ -81,22 +73,21 @@ class GroupsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(GroupRequest $request, Group $group)
+  public function update(GroupRequest $request, $id)
   {
-    $result = $this->group_service->updateAGroupWith($request->all(), $group);
-
+    $result = (new GroupsService($request->all(), $id, null))->update();
     return redirect()->back()->with('message', $result['msg']);
   }
 
   /**
    * Remove the specified resource from storage.
    *
-   * @param  array  $groups_id
+   * @param  string  $groups_id
    * @return \Illuminate\Http\Response
    */
   public function destroy($groups_id)
   {
-    $result = $this->group_service->deleteGroup($groups_id);
+    $result = (new GroupsService(null, null, $groups_id))->delete();
 
     return redirect()->back()->with('message', $result['msg']);
   }
