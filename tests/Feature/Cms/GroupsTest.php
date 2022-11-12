@@ -85,6 +85,23 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
+  public function when_updating_a_group_if_it_snt_found_an_error_is_returned()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $group_data = [
+      'name' => $this->faker->word(),
+      'status' => $this->faker->boolean(),
+      'modules' => Modules::factory(1)->create()->pluck('id')
+    ];
+    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+
+    $response = $this->patch(route('cms.groups.update', ['group' => $group->id + 1]), $group_data);
+
+    $response->assertSessionHas('message', trans('cms.groups.error_not_found'));
+  }
+
+  /** @test */
   public function when_a_group_is_updated_its_data_is_persisted_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();

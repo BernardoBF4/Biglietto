@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Group;
+use Exception;
 
 class GroupsService
 {
@@ -35,14 +36,17 @@ class GroupsService
 
   public function update()
   {
+    try {
+      $modules_ids = array_pop($this->data);
+      $group = $this->__findOrFail();
 
-    $modules_ids = array_pop($this->data);
-    $group = $this->__findOrFail();
+      $group->update($this->data);
+      $group->modules()->sync($modules_ids);
 
-    $group->update($this->data);
-    $group->modules()->sync($modules_ids);
-
-    return ['msg' => trans('cms.groups.success_update')];
+      return ['msg' => trans('cms.groups.success_update')];
+    } catch (\Throwable $th) {
+      return ['msg' => $th->getMessage()];
+    }
   }
 
 
