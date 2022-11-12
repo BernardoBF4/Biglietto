@@ -37,7 +37,7 @@ class EventsController extends Controller
    */
   public function store(EventRequest $request)
   {
-    $event_service = new EventsService($request->all(), null);
+    $event_service = new EventsService($request->all(), null, null);
     $result = $event_service->createEvent();
     return redirect()->back()->with('message', $result['msg']);
   }
@@ -73,7 +73,7 @@ class EventsController extends Controller
    */
   public function update(EventRequest $request, $id)
   {
-    $event_service = new EventsService($request->all(), $id);
+    $event_service = new EventsService($request->all(), $id, null);
     $result = $event_service->updateEvent();
     return redirect()->back()->with('message', $result['msg']);
   }
@@ -81,11 +81,13 @@ class EventsController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param  string  $events_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($events_id)
   {
-    //
+    $event_service = new EventsService(null, null, $events_id);
+    $result = $event_service->deleteEvent();
+    return redirect()->back()->with('message', $result['msg']);
   }
 }

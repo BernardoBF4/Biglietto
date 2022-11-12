@@ -128,4 +128,16 @@ class EventTest extends TestCase
 
     $response->assertSessionHas('message', trans('cms.events.error_not_found'));
   }
+
+  /** @test */
+  public function events_can_be_excluded()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $users_id = Event::factory(2)->create()->pluck('id');
+
+    $response = $this->delete(route('cms.events.destroy', $users_id));
+
+    $response->assertSessionHas('message', trans('cms.events.success_delete'));
+  }
 }

@@ -7,13 +7,15 @@ use Exception;
 
 class EventsService
 {
-  private array $data;
+  private ?array $data;
   private ?int $event_id;
+  private ?string $events_to_be_deleted;
 
-  public function __construct(array $data, ?int $event_id)
+  public function __construct(?array $data, ?int $event_id, ?string $events_to_be_deleted)
   {
     $this->data = $data;
     $this->event_id = $event_id;
+    $this->events_to_be_deleted = $events_to_be_deleted;
   }
 
   public function createEvent()
@@ -31,6 +33,13 @@ class EventsService
     } catch (\Throwable $th) {
       return ['msg' => $th->getMessage()];
     }
+  }
+
+  public function deleteEvent()
+  {
+    Event::whereIn('id', json_decode($this->events_to_be_deleted))->delete();
+
+    return ['msg' => trans('cms.events.success_delete')];
   }
 
   private function __findEventOrFail()
