@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Cms;
 
+use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -9,7 +10,7 @@ use Tests\TestCase;
 
 class EventTest extends TestCase
 {
-  use WithFaker;
+  use WithFaker, RefreshDatabase;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
@@ -71,5 +72,23 @@ class EventTest extends TestCase
 
     $this->checkIfSessionErrorMatchesString('start_datetime', 'A data de início não pode ser maior que a data de término.');
     $this->checkIfSessionErrorMatchesString('end_datetime', 'A data de início não pode ser maior que a data de término.');
+  }
+
+  /** @test */
+  public function an_event_can_be_updated()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $event_data = [
+      'status' => $this->faker->boolean(),
+      'title' => $this->faker->name(),
+      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+    ];
+    $event = Event::factory()->create();
+
+    $response = $this->patch(route('cms.events.update', $event->id), $event_data);
+
+    $response->assertSessionHas('message', trans('cms.events.success_update'));
   }
 }

@@ -37,7 +37,7 @@ class EventsController extends Controller
    */
   public function store(EventRequest $request)
   {
-    $event_service = new EventsService($request->all());
+    $event_service = new EventsService($request->all(), null);
     $result = $event_service->createEvent();
     return redirect()->back()->with('message', $result['msg']);
   }
@@ -71,9 +71,11 @@ class EventsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(EventRequest $request, $id)
   {
-    //
+    $event_service = new EventsService($request->all(), $id);
+    $result = $event_service->updateEvent();
+    return redirect()->back()->with('message', $result['msg']);
   }
 
   /**
