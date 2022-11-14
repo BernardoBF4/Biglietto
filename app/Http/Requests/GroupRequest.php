@@ -31,13 +31,7 @@ class GroupRequest extends FormRequest
       'status' => 'boolean|nullable',
       'modules' => [
         'required',
-        function ($attribute, $value, $fail) {
-          foreach ($value as $module_id) {
-            if (!Modules::where('id', $module_id)->count()) {
-              $fail('Os módulos devem ser módulos válidos.');
-            }
-          }
-        }
+        fn ($attribute, $value, $fail) => $this->areModulesValidModules($attribute, $value, $fail),
       ],
     ];
   }
@@ -49,5 +43,14 @@ class GroupRequest extends FormRequest
       'name.required' => 'O nome precisa ser preenchido.',
       'modules.required' => 'O grupo precisa de pelo menos um módulo.'
     ];
+  }
+
+  private function areModulesValidModules($attribute, $value, $fail)
+  {
+    foreach ($value as $module_id) {
+      if (!Modules::where('id', $module_id)->count()) {
+        $fail('Os módulos devem ser módulos válidos.');
+      }
+    }
   }
 }
