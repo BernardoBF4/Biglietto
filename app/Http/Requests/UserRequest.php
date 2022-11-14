@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
    */
   public function rules()
   {
-    if ($this->isMethod('POST')) {
+    if ($this->__isCreateAction()) {
       $rules = [
         'email' => 'required|string|email|unique:users,email',
         'name' => 'required|string|max:255',
@@ -54,5 +54,10 @@ class UserRequest extends FormRequest
       'password_confirmation.min' => 'A senha precisa ter no mínimo 6 caracteres.',
       'password_confirmation.max' => 'A senha pode ter no máximo 12 caracteres.'
     ];
+  }
+
+  private function __isCreateAction()
+  {
+    return $this->isMethod('POST');
   }
 }
