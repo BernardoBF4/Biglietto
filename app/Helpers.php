@@ -7,7 +7,7 @@ if (!function_exists('cms_response')) {
       'data' => $data,
       'http_status' => $http_status,
       'msg' => $msg,
-      'status' => $status,
+      'success' => $status,
     ];
   }
 }
