@@ -41,7 +41,7 @@ class GroupsController extends Controller
   public function store(GroupRequest $request)
   {
     $result = (new GroupsService($request->all(), null, null))->create();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -76,7 +76,7 @@ class GroupsController extends Controller
   public function update(GroupRequest $request, $id)
   {
     $result = (new GroupsService($request->all(), $id, null))->update();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -89,6 +89,6 @@ class GroupsController extends Controller
   {
     $result = (new GroupsService(null, null, $groups_id))->delete();
 
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 }

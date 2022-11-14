@@ -46,7 +46,7 @@ class GroupsTest extends TestCase
 
     $response = $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
 
-    $response->assertSessionHas('message', trans('cms.groups.success_create'));
+    $response->assertSessionHas('message', cms_response(trans('cms.groups.success_create')));
   }
 
   /** @test */
@@ -81,7 +81,7 @@ class GroupsTest extends TestCase
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->id]), $group_data);
 
-    $response->assertSessionHas('message', trans('cms.groups.success_update'));
+    $response->assertSessionHas('message', cms_response(trans('cms.groups.success_update')));
   }
 
   /** @test */
@@ -98,7 +98,7 @@ class GroupsTest extends TestCase
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->id + 1]), $group_data);
 
-    $response->assertSessionHas('message', trans('cms.groups.error_not_found'));
+    $response->assertSessionHas('message', cms_response(trans('cms.groups.error_not_found'), false, 400));
   }
 
   /** @test */
@@ -128,7 +128,7 @@ class GroupsTest extends TestCase
 
     $response = $this->delete(route('cms.groups.destroy', ['group' => $groups_id]));
 
-    $response->assertSessionHas('message', trans('cms.groups.success_delete'));
+    $response->assertSessionHas('message', cms_response(trans('cms.groups.success_delete')));
   }
 
   /** @test */

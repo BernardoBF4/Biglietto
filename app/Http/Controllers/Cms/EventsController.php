@@ -39,7 +39,7 @@ class EventsController extends Controller
   {
     $event_service = new EventsService($request->all(), null, null);
     $result = $event_service->create();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -75,7 +75,7 @@ class EventsController extends Controller
   {
     $event_service = new EventsService($request->all(), $id, null);
     $result = $event_service->update();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -88,6 +88,6 @@ class EventsController extends Controller
   {
     $event_service = new EventsService(null, null, $events_id);
     $result = $event_service->delete();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 }

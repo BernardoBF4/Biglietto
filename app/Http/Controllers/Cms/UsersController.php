@@ -38,7 +38,7 @@ class UsersController extends Controller
   {
     $users_service = new UsersService($request->all(), null, null);
     $result = $users_service->create();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -74,7 +74,7 @@ class UsersController extends Controller
   {
     $users_service = new UsersService($request->all(), $id, null);
     $result = $users_service->update();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 
   /**
@@ -87,6 +87,6 @@ class UsersController extends Controller
   {
     $users_service = new UsersService(null, null, $users_id);
     $result = $users_service->delete();
-    return redirect()->back()->with('message', $result['msg']);
+    return redirect()->back()->with('message', $result);
   }
 }

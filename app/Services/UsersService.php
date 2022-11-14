@@ -29,9 +29,9 @@ class UsersService implements CRUD
       $this->data['password'] = Hash::make($this->data['password']);
       User::create($this->data);
 
-      return ['msg' => trans('cms.users.success_create')];
+      return cms_response(trans('cms.users.success_create'));
     } catch (\Throwable $th) {
-      return ['msg' => $th->getMessage()];
+      return cms_response($th->getMessage(), false, 400);
     }
   }
 
@@ -46,17 +46,16 @@ class UsersService implements CRUD
       $user = $this->__getUserOrFail();
       $user->update($this->data);
 
-      return ['msg' => trans('cms.users.success_update')];
+      return cms_response(trans('cms.users.success_update'));
     } catch (\Throwable $th) {
-      return ['msg' => $th->getMessage()];
+      return cms_response($th->getMessage(), false, 400);
     }
   }
 
   public function delete()
   {
     User::whereIn('id', json_decode($this->users_to_be_deleted))->delete();
-
-    return ['msg' => trans('cms.users.success_delete')];
+    return cms_response(trans('cms.users.success_delete'));
   }
 
   private function __getUserOrFail()
