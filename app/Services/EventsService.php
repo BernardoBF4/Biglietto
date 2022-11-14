@@ -28,7 +28,7 @@ class EventsService implements CRUD
   public function update()
   {
     try {
-      $event = $this->__findEventOrFail();
+      $event = $this->__findOrFail();
       $event->update($this->data);
 
       return cms_response(trans('cms.events.success_update'));
@@ -43,7 +43,7 @@ class EventsService implements CRUD
     return cms_response(trans('cms.events.success_delete'));
   }
 
-  private function __findEventOrFail()
+  private function __findOrFail()
   {
     $event = Event::find($this->event_id);
     if ($event instanceof Event) {

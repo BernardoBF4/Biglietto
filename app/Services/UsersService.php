@@ -43,7 +43,7 @@ class UsersService implements CRUD
         $this->data['password'] = Hash::make($this->data['password']);
       }
 
-      $user = $this->__getUserOrFail();
+      $user = $this->__findOrFail();
       $user->update($this->data);
 
       return cms_response(trans('cms.users.success_update'));
@@ -58,7 +58,7 @@ class UsersService implements CRUD
     return cms_response(trans('cms.users.success_delete'));
   }
 
-  private function __getUserOrFail()
+  private function __findOrFail()
   {
     $user = User::find($this->user_id);
     if ($user instanceof User) {
