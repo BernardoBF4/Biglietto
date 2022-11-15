@@ -46,7 +46,7 @@ class UsersTest extends TestCase
   /** @test */
   public function if_passwords_dont_match_when_creating_a_user_an_error_is_returned()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $user_data = [
       'email' => $this->faker->safeEmail(),
@@ -58,7 +58,8 @@ class UsersTest extends TestCase
 
     $response = $this->post(route('cms.users.store'), $user_data);
 
-    $response->assertSessionHas('message', cms_response(trans('cms.users.error_passwords'), false, 400));
+    $this->checkIfSessionErrorMatchesString('password', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('password_confirmation', 'A senha e confirmação de senha não são iguais.');
   }
 
   /** @test */
@@ -121,7 +122,7 @@ class UsersTest extends TestCase
   /** @test */
   public function if_passwords_dont_match_when_updating_a_user_an_error_is_returned()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
@@ -132,9 +133,10 @@ class UsersTest extends TestCase
       'password_confirmation' => $this->faker->password(6, 12),
     ];
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->id]), $user_data);
+    $this->patch(route('cms.users.update', ['user' => $user->id]), $user_data);
 
-    $response->assertSessionHas('message', cms_response(trans('cms.users.error_passwords'), false, 400));
+    $this->checkIfSessionErrorMatchesString('password', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('password_confirmation', 'A senha e confirmação de senha não são iguais.');
   }
 
   /** @test */

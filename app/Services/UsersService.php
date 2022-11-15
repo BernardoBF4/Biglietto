@@ -23,8 +23,6 @@ class UsersService implements CRUD
   public function create()
   {
     try {
-      $this->__checkIfPasswordsMatch();
-
       $this->data['token'] = Hash::make($this->data['email']);
       $this->data['password'] = Hash::make($this->data['password']);
       User::create($this->data);
@@ -39,7 +37,6 @@ class UsersService implements CRUD
   {
     try {
       if (array_key_exists('password', $this->data)) {
-        $this->__checkIfPasswordsMatch();
         $this->data['password'] = Hash::make($this->data['password']);
       }
 
@@ -65,12 +62,5 @@ class UsersService implements CRUD
       return $user;
     }
     throw new Exception(trans('cms.users.error_user_not_found'));
-  }
-
-  private function __checkIfPasswordsMatch()
-  {
-    if ($this->data['password'] !== $this->data['password_confirmation']) {
-      throw new Exception(trans('cms.users.error_passwords'));
-    }
   }
 }

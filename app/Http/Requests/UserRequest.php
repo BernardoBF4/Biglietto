@@ -27,15 +27,15 @@ class UserRequest extends FormRequest
       $rules = [
         'email' => 'required|string|email|unique:users,email',
         'name' => 'required|string|max:255',
-        'password' => 'required|string|min:6|max:12',
-        'password_confirmation' => 'required|string|min:6|max:12'
+        'password' => 'required|string|min:6|max:12|same:password_confirmation',
+        'password_confirmation' => 'required|string|min:6|max:12|same:password'
       ];
     } else {
       $rules = [
         'email' => 'required|string|email|unique:users,email',
         'name' => 'required|string|max:255',
-        'password' => 'required_with:password_confirmation|string|min:6|max:12',
-        'password_confirmation' => 'required_with:password|string|min:6|max:12'
+        'password' => 'required_with:password_confirmation|string|min:6|max:12|same:password_confirmation',
+        'password_confirmation' => 'required_with:password|string|min:6|max:12|same:password'
       ];
     }
 
@@ -51,8 +51,10 @@ class UserRequest extends FormRequest
       'name.max' => 'O nome pode ter no máximo 255 caracteres.',
       'password.min' => 'A senha precisa ter no mínimo 6 caracteres.',
       'password.max' => 'A senha pode ter no máximo 12 caracteres.',
+      'password.same' => 'A senha e confirmação de senha não são iguais.',
       'password_confirmation.min' => 'A senha precisa ter no mínimo 6 caracteres.',
-      'password_confirmation.max' => 'A senha pode ter no máximo 12 caracteres.'
+      'password_confirmation.max' => 'A senha pode ter no máximo 12 caracteres.',
+      'password_confirmation.same' => 'A senha e confirmação de senha não são iguais.'
     ];
   }
 
