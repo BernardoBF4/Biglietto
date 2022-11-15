@@ -22,15 +22,11 @@ class CmsUsersService implements CRUD
 
   public function create()
   {
-    try {
-      $this->data['token'] = Hash::make($this->data['email']);
-      $this->data['password'] = Hash::make($this->data['password']);
-      User::create($this->data);
+    $this->data['token'] = Hash::make($this->data['email']);
+    $this->data['password'] = Hash::make($this->data['password']);
+    User::create($this->data);
 
-      return cms_response(trans('cms.users.success_create'));
-    } catch (\Throwable $th) {
-      return cms_response($th->getMessage(), false, 400);
-    }
+    return cms_response(trans('cms.users.success_create'));
   }
 
   public function update()
