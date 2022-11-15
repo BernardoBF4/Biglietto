@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Services\UsersService;
+use App\Services\CmsUsersService;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -36,7 +36,7 @@ class UsersController extends Controller
    */
   public function store(UserRequest $request)
   {
-    $users_service = new UsersService($request->all(), null, null);
+    $users_service = new CmsUsersService($request->all(), null, null);
     $result = $users_service->create();
     return redirect()->back()->with('message', $result);
   }
@@ -72,7 +72,7 @@ class UsersController extends Controller
    */
   public function update(UserRequest $request, $id)
   {
-    $users_service = new UsersService($request->all(), $id, null);
+    $users_service = new CmsUsersService($request->all(), $id, null);
     $result = $users_service->update();
     return redirect()->back()->with('message', $result);
   }
@@ -85,7 +85,7 @@ class UsersController extends Controller
    */
   public function destroy($users_id)
   {
-    $users_service = new UsersService(null, null, $users_id);
+    $users_service = new CmsUsersService(null, null, $users_id);
     $result = $users_service->delete();
     return redirect()->back()->with('message', $result);
   }
