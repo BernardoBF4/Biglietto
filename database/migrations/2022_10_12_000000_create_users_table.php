@@ -18,6 +18,7 @@ return new class extends Migration
       $table->string('name', 255);
       $table->string('email')->unique();
       $table->string('password');
+      $table->unsignedInteger('fk_group_id')->nullable()->foreign()->references('id')->on('groups');
       $table->string('token')->unique();
       $table->timestamps();
     });

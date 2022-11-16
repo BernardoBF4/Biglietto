@@ -63,8 +63,8 @@ class GroupsTest extends TestCase
     $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
 
     $this->assertDatabaseHas('groups', $group_data);
-    $this->assertDatabaseCount('modules', 1);
-    $this->assertDatabaseCount('group_modules', 1);
+    $this->assertDatabaseCount('modules', 2);
+    $this->assertDatabaseCount('group_modules', 2);
   }
 
   /** @test */

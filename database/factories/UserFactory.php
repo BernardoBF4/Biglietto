@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Group;
+use App\Models\Modules;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -22,6 +24,7 @@ class UserFactory extends Factory
       'name' => fake()->name(),
       'email' => fake()->safeEmail(),
       'token' => Hash::make(Str::random(10)),
+      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
     ];
   }
 
