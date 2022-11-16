@@ -12,7 +12,7 @@ use Tests\TestCase;
 class UsersTest extends TestCase
 {
 
-  use WithFaker;
+  use WithFaker, RefreshDatabase;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
