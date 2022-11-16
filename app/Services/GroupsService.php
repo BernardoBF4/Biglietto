@@ -26,7 +26,8 @@ class GroupsService implements CRUD
   public function update(int $id, array $data)
   {
     try {
-      $modules_ids = array_pop($data);
+      $modules_ids = $data['modules'];
+      unset($data['modules']);
       $group = $this->__findOrFail($id);
 
       $group->update($data);
