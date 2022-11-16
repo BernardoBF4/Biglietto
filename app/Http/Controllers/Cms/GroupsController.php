@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class GroupsController extends Controller
 {
+  private $service;
+  public function __construct(GroupsService $service)
+  {
+    $this->service = $service;
+  }
+
   /**
    * Display a listing of the resource.
    *
@@ -17,7 +23,7 @@ class GroupsController extends Controller
    */
   public function index()
   {
-    $groups = (new GroupsService(null, null, null))->listAll();
+    $groups = $this->service->listAll();
 
     return view('cms.groups.index', compact('groups'));
   }
@@ -40,7 +46,7 @@ class GroupsController extends Controller
    */
   public function store(GroupRequest $request)
   {
-    $result = (new GroupsService($request->all(), null, null))->create();
+    $result = $this->service->create($request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -75,7 +81,7 @@ class GroupsController extends Controller
    */
   public function update(GroupRequest $request, $id)
   {
-    $result = (new GroupsService($request->all(), $id, null))->update();
+    $result = $this->service->update($id, $request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -87,8 +93,7 @@ class GroupsController extends Controller
    */
   public function destroy($groups_id)
   {
-    $result = (new GroupsService(null, null, $groups_id))->delete();
-
+    $result = $this->service->delete($groups_id);
     return redirect()->back()->with('response', $result);
   }
 }

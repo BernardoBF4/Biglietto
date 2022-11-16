@@ -9,35 +9,24 @@ use App\Interfaces\CRUD;
 
 class CmsUsersService implements CRUD
 {
-  private ?int $user_id;
-  private ?array $data;
-  private ?string $users_to_be_deleted;
-
-  public function __construct(?array $data, ?int $user_id, ?string $users_to_be_deleted)
+  public function create(array $data)
   {
-    $this->user_id = $user_id;
-    $this->data = $data;
-    $this->users_to_be_deleted = $users_to_be_deleted;
-  }
-
-  public function create()
-  {
-    $this->data['token'] = Hash::make($this->data['email']);
-    $this->data['password'] = Hash::make($this->data['password']);
-    User::create($this->data);
+    $data['token'] = Hash::make($data['email']);
+    $data['password'] = Hash::make($data['password']);
+    User::create($data);
 
     return cms_response(trans('cms.users.success_create'));
   }
 
-  public function update()
+  public function update(int $id, array $data)
   {
     try {
-      if (array_key_exists('password', $this->data)) {
-        $this->data['password'] = Hash::make($this->data['password']);
+      if (array_key_exists('password', $data)) {
+        $data['password'] = Hash::make($data['password']);
       }
 
-      $user = $this->__findOrFail();
-      $user->update($this->data);
+      $user = $this->__findOrFail($id);
+      $user->update($data);
 
       return cms_response(trans('cms.users.success_update'));
     } catch (\Throwable $th) {
@@ -45,15 +34,15 @@ class CmsUsersService implements CRUD
     }
   }
 
-  public function delete()
+  public function delete(string $ids)
   {
-    User::whereIn('id', json_decode($this->users_to_be_deleted))->delete();
+    User::whereIn('id', json_decode($ids))->delete();
     return cms_response(trans('cms.users.success_delete'));
   }
 
-  private function __findOrFail()
+  private function __findOrFail(int $id)
   {
-    $user = User::find($this->user_id);
+    $user = User::find($id);
     if ($user instanceof User) {
       return $user;
     }

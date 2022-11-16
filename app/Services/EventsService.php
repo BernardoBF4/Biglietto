@@ -8,28 +8,18 @@ use Exception;
 
 class EventsService implements CRUD
 {
-  private ?array $data;
-  private ?int $event_id;
-  private ?string $events_to_be_deleted;
 
-  public function __construct(?array $data, ?int $event_id, ?string $events_to_be_deleted)
+  public function create(array $data)
   {
-    $this->data = $data;
-    $this->event_id = $event_id;
-    $this->events_to_be_deleted = $events_to_be_deleted;
-  }
-
-  public function create()
-  {
-    Event::create($this->data);
+    Event::create($data);
     return cms_response(trans('cms.events.success_create'));
   }
 
-  public function update()
+  public function update(int $id, array $data)
   {
     try {
-      $event = $this->__findOrFail();
-      $event->update($this->data);
+      $event = $this->__findOrFail($id);
+      $event->update($data);
 
       return cms_response(trans('cms.events.success_update'));
     } catch (\Throwable $th) {
@@ -37,15 +27,15 @@ class EventsService implements CRUD
     }
   }
 
-  public function delete()
+  public function delete(string $ids)
   {
-    Event::whereIn('id', json_decode($this->events_to_be_deleted))->delete();
+    Event::whereIn('id', json_decode($ids))->delete();
     return cms_response(trans('cms.events.success_delete'));
   }
 
-  private function __findOrFail()
+  private function __findOrFail(int $id)
   {
-    $event = Event::find($this->event_id);
+    $event = Event::find($id);
     if ($event instanceof Event) {
       return $event;
     }

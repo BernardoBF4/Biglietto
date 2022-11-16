@@ -8,38 +8,28 @@ use Exception;
 
 class GroupsService implements CRUD
 {
-  private ?array $data;
-  private ?int $group_id;
-  private ?string $groups_to_be_deleted;
-
-  public function __construct(?array $data, ?int $group_id, ?string $groups_to_be_deleted)
-  {
-    $this->data = $data;
-    $this->group_id = $group_id;
-    $this->groups_to_be_deleted = $groups_to_be_deleted;
-  }
-
   public function listAll()
   {
     return Group::all();
   }
 
-  public function create()
+  public function create(array $data)
   {
-    $modules_id = array_pop($this->data);
+    $modules_id = array_pop($data);
 
-    $group = Group::create($this->data);
+    $group = Group::create($data);
     $group->modules()->attach($modules_id);
+
     return cms_response(trans('cms.groups.success_create'));
   }
 
-  public function update()
+  public function update(int $id, array $data)
   {
     try {
-      $modules_ids = array_pop($this->data);
-      $group = $this->__findOrFail();
+      $modules_ids = array_pop($data);
+      $group = $this->__findOrFail($id);
 
-      $group->update($this->data);
+      $group->update($data);
       $group->modules()->sync($modules_ids);
 
       return cms_response(trans('cms.groups.success_update'));
@@ -49,15 +39,15 @@ class GroupsService implements CRUD
   }
 
 
-  public function delete()
+  public function delete(string $ids)
   {
-    Group::whereIn('id', json_decode($this->groups_to_be_deleted))->delete();
+    Group::whereIn('id', json_decode($ids))->delete();
     return cms_response(trans('cms.groups.success_delete'));
   }
 
-  private function __findOrFail()
+  private function __findOrFail(int $id)
   {
-    $group = Group::find($this->group_id);
+    $group = Group::find($id);
     if ($group instanceof Group) {
       return $group;
     }

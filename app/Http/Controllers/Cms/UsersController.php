@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+  private $service;
+
+  public function __construct(CmsUsersService $service)
+  {
+    $this->service = $service;
+  }
+
   /**
    * Display a listing of the resource.
    *
@@ -36,8 +43,7 @@ class UsersController extends Controller
    */
   public function store(UserRequest $request)
   {
-    $users_service = new CmsUsersService($request->all(), null, null);
-    $result = $users_service->create();
+    $result = $this->service->create($request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -72,8 +78,7 @@ class UsersController extends Controller
    */
   public function update(UserRequest $request, $id)
   {
-    $users_service = new CmsUsersService($request->all(), $id, null);
-    $result = $users_service->update();
+    $result = $this->service->update($id, $request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -85,8 +90,7 @@ class UsersController extends Controller
    */
   public function destroy($users_id)
   {
-    $users_service = new CmsUsersService(null, null, $users_id);
-    $result = $users_service->delete();
+    $result = $this->service->delete($users_id);
     return redirect()->back()->with('response', $result);
   }
 }

@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface CRUD
 {
-  public function create();
-  public function update();
-  public function delete();
+  public function create(array $data);
+  public function update(int $id, array $data);
+  public function delete(string $ids);
 };

@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Services\EventsService;
-use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
+  private $service;
+
+  public function __construct(EventsService $service)
+  {
+    $this->service = $service;
+  }
+
   /**
    * Display a listing of the resource.
    *
@@ -37,8 +43,7 @@ class EventsController extends Controller
    */
   public function store(EventRequest $request)
   {
-    $event_service = new EventsService($request->all(), null, null);
-    $result = $event_service->create();
+    $result = $this->service->create($request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -73,8 +78,7 @@ class EventsController extends Controller
    */
   public function update(EventRequest $request, $id)
   {
-    $event_service = new EventsService($request->all(), $id, null);
-    $result = $event_service->update();
+    $result = $this->service->update($id, $request->all());
     return redirect()->back()->with('response', $result);
   }
 
@@ -86,8 +90,7 @@ class EventsController extends Controller
    */
   public function destroy($events_id)
   {
-    $event_service = new EventsService(null, null, $events_id);
-    $result = $event_service->delete();
+    $result = $this->service->delete($events_id);
     return redirect()->back()->with('response', $result);
   }
 }
