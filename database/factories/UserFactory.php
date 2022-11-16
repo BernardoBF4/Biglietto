@@ -21,10 +21,10 @@ class UserFactory extends Factory
   public function definition()
   {
     return [
-      'name' => fake()->name(),
       'email' => fake()->safeEmail(),
-      'token' => Hash::make(Str::random(10)),
       'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'name' => fake()->name(),
+      'token' => Hash::make(Str::random(10)),
     ];
   }
 

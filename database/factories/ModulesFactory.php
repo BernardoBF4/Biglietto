@@ -18,9 +18,9 @@ class ModulesFactory extends Factory
   public function definition()
   {
     return [
+      'father_id' => null,
       'name' => fake()->word(),
       'status' => fake()->boolean(),
-      'father_id' => null,
     ];
   }
 }

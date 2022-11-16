@@ -10,9 +10,9 @@ class Modules extends Model
   use HasFactory;
 
   protected $fillable = [
+    'father_id',
     'name',
     'status',
-    'father_id',
   ];
 
   protected $hidden = [

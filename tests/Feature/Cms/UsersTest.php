@@ -110,7 +110,7 @@ class UsersTest extends TestCase
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'group' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
     ];
 

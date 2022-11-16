@@ -73,9 +73,9 @@ class GroupsTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
+      'modules' => Modules::factory(1)->create()->pluck('id'),
       'name' => $this->faker->word(),
       'status' => $this->faker->boolean(),
-      'modules' => Modules::factory(1)->create()->pluck('id')
     ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 
@@ -90,9 +90,9 @@ class GroupsTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
+      'modules' => Modules::factory(1)->create()->pluck('id'),
       'name' => $this->faker->word(),
       'status' => $this->faker->boolean(),
-      'modules' => Modules::factory(1)->create()->pluck('id')
     ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 

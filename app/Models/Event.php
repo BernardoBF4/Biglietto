@@ -10,10 +10,10 @@ class Event extends Model
   use HasFactory;
 
   protected $fillable = [
+    'end_datetime',
+    'start_datetime',
     'status',
     'title',
-    'start_datetime',
-    'end_datetime',
   ];
 
   protected $hidden = [
