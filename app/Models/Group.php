@@ -31,6 +31,6 @@ class Group extends Model
 
   public function modules()
   {
-    return $this->belongsToMany(Modules::class, 'group_modules', 'group_id', 'module_id');
+    return $this->belongsToMany(Modules::class, 'group_modules', 'fk_group_id', 'fk_module_id');
   }
 }
