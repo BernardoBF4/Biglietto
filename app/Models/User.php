@@ -34,4 +34,9 @@ class User extends Authenticatable
     'password',
     'token',
   ];
+
+  public function group()
+  {
+    return $this->hasOne(Group::class, 'id', 'fk_group_id');
+  }
 }
