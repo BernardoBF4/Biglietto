@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Authentication\AuthController;
-use App\Http\Controllers\Cms\EventsController;
-use App\Http\Controllers\Cms\GroupsController;
+use App\Http\Controllers\Cms\EventController;
+use App\Http\Controllers\Cms\GroupController;
 use App\Http\Controllers\Cms\TicketController;
-use App\Http\Controllers\Cms\UsersController;
+use App\Http\Controllers\Cms\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\AuthMiddleware;
 
@@ -27,8 +27,8 @@ Route::as('auth.')->group(function () {
 });
 
 Route::middleware(AuthMiddleware::class)->group(function () {
-  Route::resources(['groups' => GroupsController::class]);
-  Route::resources(['users' => UsersController::class]);
-  Route::resources(['events' => EventsController::class]);
+  Route::resources(['groups' => GroupController::class]);
+  Route::resources(['users' => UserController::class]);
+  Route::resources(['events' => EventController::class]);
   Route::resources(['tickets' => TicketController::class]);
 });

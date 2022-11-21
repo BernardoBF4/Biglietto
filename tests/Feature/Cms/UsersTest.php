@@ -32,7 +32,7 @@ class UsersTest extends TestCase
     $password = $this->faker->password(6, 12);
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
       'password' => $password,
       'password_confirmation' => $password,
@@ -50,7 +50,7 @@ class UsersTest extends TestCase
 
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
       'password' => $this->faker->password(6, 12),
       'password_confirmation' => $this->faker->password(6, 12),
@@ -71,7 +71,7 @@ class UsersTest extends TestCase
     $password = $this->faker->password(6, 12);
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
       'password' => $password,
       'password_confirmation' => $password,
@@ -91,7 +91,7 @@ class UsersTest extends TestCase
     $password = $this->faker->password(6, 12);
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
       'password' => $password,
       'password_confirmation' => $password,
@@ -110,7 +110,7 @@ class UsersTest extends TestCase
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
     ];
 
@@ -127,7 +127,7 @@ class UsersTest extends TestCase
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
       'email' => $this->faker->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => $this->faker->name(),
       'password' => $this->faker->password(6, 12),
       'password_confirmation' => $this->faker->password(6, 12),

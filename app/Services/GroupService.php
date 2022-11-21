@@ -6,7 +6,7 @@ use App\Models\Group;
 use App\Interfaces\CRUD;
 use Exception;
 
-class GroupsService implements CRUD
+class GroupService implements CRUD
 {
   public function listAll()
   {

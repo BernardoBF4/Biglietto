@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Services\CmsUsersService;
+use App\Services\CmsUserService;
 use Illuminate\Http\Request;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
   private $service;
 
-  public function __construct(CmsUsersService $service)
+  public function __construct(CmsUserService $service)
   {
     $this->service = $service;
   }

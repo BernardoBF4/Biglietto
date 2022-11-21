@@ -6,7 +6,7 @@ use App\Models\Event;
 use App\Interfaces\CRUD;
 use Exception;
 
-class EventsService implements CRUD
+class EventService implements CRUD
 {
 
   public function create(array $data)

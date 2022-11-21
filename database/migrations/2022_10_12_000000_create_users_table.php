@@ -18,7 +18,7 @@ return new class extends Migration
       $table->string('name', 255);
       $table->string('email')->unique();
       $table->string('password');
-      $table->foreignId('fk_group_id')->constrained('groups', 'id')->nullable();
+      $table->foreignId('fk_groups_id')->constrained('groups', 'id')->nullable();
       $table->string('token')->unique();
       $table->timestamps();
     });

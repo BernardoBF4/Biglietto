@@ -19,7 +19,7 @@ class User extends Authenticatable
    */
   protected $fillable = [
     'email',
-    'fk_group_id',
+    'fk_groups_id',
     'name',
     'password',
     'token',
@@ -37,6 +37,6 @@ class User extends Authenticatable
 
   public function group()
   {
-    return $this->hasOne(Group::class, 'id', 'fk_group_id');
+    return $this->hasOne(Group::class, 'id', 'fk_groups_id');
   }
 }

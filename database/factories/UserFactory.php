@@ -22,7 +22,7 @@ class UserFactory extends Factory
   {
     return [
       'email' => fake()->safeEmail(),
-      'fk_group_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
       'name' => fake()->name(),
       'token' => Hash::make(Str::random(10)),
     ];

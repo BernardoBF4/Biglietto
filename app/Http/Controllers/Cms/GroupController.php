@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EventRequest;
-use App\Services\EventsService;
+use App\Http\Requests\GroupRequest;
+use App\Models\Group;
+use App\Services\GroupService;
+use Illuminate\Http\Request;
 
-class EventsController extends Controller
+class GroupController extends Controller
 {
   private $service;
-
-  public function __construct(EventsService $service)
+  public function __construct(GroupService $service)
   {
     $this->service = $service;
   }
@@ -22,7 +23,9 @@ class EventsController extends Controller
    */
   public function index()
   {
-    //
+    $groups = $this->service->listAll();
+
+    return view('cms.groups.index', compact('groups'));
   }
 
   /**
@@ -41,7 +44,7 @@ class EventsController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(EventRequest $request)
+  public function store(GroupRequest $request)
   {
     $result = $this->service->create($request->all());
     return redirect()->back()->with('response', $result);
@@ -76,7 +79,7 @@ class EventsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(EventRequest $request, $id)
+  public function update(GroupRequest $request, $id)
   {
     $result = $this->service->update($id, $request->all());
     return redirect()->back()->with('response', $result);
@@ -85,12 +88,12 @@ class EventsController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  string  $events_id
+   * @param  string  $groups_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($events_id)
+  public function destroy($groups_id)
   {
-    $result = $this->service->delete($events_id);
+    $result = $this->service->delete($groups_id);
     return redirect()->back()->with('response', $result);
   }
 }

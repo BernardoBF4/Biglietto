@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Hash;
 use App\Interfaces\CRUD;
 
-class CmsUsersService implements CRUD
+class CmsUserService implements CRUD
 {
   public function create(array $data)
   {
