@@ -3,6 +3,7 @@
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Cms\EventsController;
 use App\Http\Controllers\Cms\GroupsController;
+use App\Http\Controllers\Cms\TicketController;
 use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\AuthMiddleware;
@@ -29,4 +30,5 @@ Route::middleware(AuthMiddleware::class)->group(function () {
   Route::resources(['groups' => GroupsController::class]);
   Route::resources(['users' => UsersController::class]);
   Route::resources(['events' => EventsController::class]);
+  Route::resources(['tickets' => TicketController::class]);
 });
