@@ -37,4 +37,21 @@ class TicketTest extends TestCase
 
     $response->assertSessionHas('response', cms_response(trans('cms.ticket.success_create')));
   }
+
+  /** @test */
+  public function when_a_test_is_created_its_data_is_persisted_to_the_database()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket_data = [
+      'fk_events_id' => Event::factory()->create()->id,
+      'name' => $this->faker->name(),
+      'price' => $this->faker->randomNumber(),
+      'status' => $this->faker->boolean(),
+    ];
+
+    $this->post(route('cms.tickets.store', $ticket_data));
+
+    $this->assertDatabaseHas('tickets', $ticket_data);
+  }
 }
