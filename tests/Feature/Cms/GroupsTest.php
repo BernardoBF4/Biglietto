@@ -4,13 +4,14 @@ namespace Tests\Feature\Cms;
 
 use App\Models\Group;
 use App\Models\Modules;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GroupsTest extends TestCase
 {
-  use WithFaker, RefreshDatabase;
+  use WithFaker;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
@@ -144,5 +145,15 @@ class GroupsTest extends TestCase
     $this->post(route('cms.groups.store'), $group_data);
 
     $this->assertEquals(session('errors')->messages()['modules'][0], 'O grupo precisa de pelo menos um módulo.');
+  }
+
+  /** @test */
+  public function a_group_has_many_users()
+  {
+    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
+
+    $group = Group::where('gro_id', $user->group->gro_id)->first();
+
+    $this->assertInstanceOf(User::class, $group->users[0]);
   }
 }

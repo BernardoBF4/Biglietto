@@ -25,4 +25,9 @@ class Group extends Model
   {
     return $this->belongsToMany(Modules::class, 'group_modules', 'fk_groups_id', 'fk_modules_id');
   }
+
+  public function users()
+  {
+    return $this->hasMany(User::class, 'fk_groups_id', 'gro_id');
+  }
 }
