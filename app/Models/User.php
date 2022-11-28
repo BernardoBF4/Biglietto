@@ -29,6 +29,6 @@ class User extends Authenticatable
 
   public function group()
   {
-    return $this->hasOne(Group::class, 'usu_id', 'fk_groups_id');
+    return $this->belongsTo(Group::class, 'fk_groups_id', 'gro_id');
   }
 }
