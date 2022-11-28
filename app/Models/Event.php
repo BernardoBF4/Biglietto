@@ -22,4 +22,9 @@ class Event extends Model
     'created_at',
     'updated_at',
   ];
+
+  public function tickets()
+  {
+    return $this->hasMany(Ticket::class, 'fk_events_id', 'eve_id');
+  }
 }

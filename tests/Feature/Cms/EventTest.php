@@ -3,6 +3,7 @@
 namespace Tests\Feature\Cms;
 
 use App\Models\Event;
+use App\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -139,5 +140,15 @@ class EventTest extends TestCase
     $response = $this->delete(route('cms.events.destroy', $users_id));
 
     $response->assertSessionHas('response', cms_response(trans('cms.events.success_delete')));
+  }
+
+  /** @test */
+  public function an_event_has_many_tickets()
+  {
+    $ticket = Ticket::factory()->create();
+
+    $event = Event::where('eve_id', $ticket->event->eve_id)->first();
+
+    $this->assertInstanceOf(Ticket::class, $event->tickets[0]);
   }
 }
