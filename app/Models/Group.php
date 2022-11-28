@@ -9,21 +9,13 @@ class Group extends Model
 {
   use HasFactory;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
+  protected $primaryKey = 'gro_id';
+
   protected $fillable = [
-    'name',
-    'status'
+    'gro_name',
+    'gro_status'
   ];
 
-  /**
-   * The attributes that should be hidden for serialization.
-   *
-   * @var array<int, string>
-   */
   protected $hidden = [
     'created_at',
     'updated_at',

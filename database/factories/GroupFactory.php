@@ -17,8 +17,8 @@ class GroupFactory extends Factory
   public function definition()
   {
     return [
-      'name' => fake()->word(),
-      'status' => fake()->boolean(),
+      'gro_name' => fake()->word(),
+      'gro_status' => fake()->boolean(),
     ];
   }
 }

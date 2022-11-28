@@ -30,7 +30,7 @@ class GroupsTest extends TestCase
     $group = Group::factory()->create();
 
     $response = $this->get('/cms/groups');
-    $response->assertSee($group->name);
+    $response->assertSee($group->gro_name);
   }
 
   /** @test */
@@ -39,8 +39,8 @@ class GroupsTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean(),
+      'gro_name' => $this->faker->word(),
+      'gro_status' => $this->faker->boolean(),
     ];
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
 
@@ -55,8 +55,8 @@ class GroupsTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean(),
+      'gro_name' => $this->faker->word(),
+      'gro_status' => $this->faker->boolean(),
     ];
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
 
@@ -74,12 +74,12 @@ class GroupsTest extends TestCase
 
     $group_data = [
       'modules' => Modules::factory(1)->create()->pluck('id'),
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean(),
+      'gro_name' => $this->faker->word(),
+      'gro_status' => $this->faker->boolean(),
     ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 
-    $response = $this->patch(route('cms.groups.update', ['group' => $group->id]), $group_data);
+    $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), $group_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.groups.success_update')));
   }
@@ -91,12 +91,12 @@ class GroupsTest extends TestCase
 
     $group_data = [
       'modules' => Modules::factory(1)->create()->pluck('id'),
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean(),
+      'gro_name' => $this->faker->word(),
+      'gro_tatus' => $this->faker->boolean(),
     ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 
-    $response = $this->patch(route('cms.groups.update', ['group' => $group->id + 1]), $group_data);
+    $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id + 1]), $group_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.groups.error_not_found'), false, 400));
   }
@@ -107,16 +107,16 @@ class GroupsTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $group_data = [
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean(),
+      'gro_name' => $this->faker->word(),
+      'gro_status' => $this->faker->boolean(),
     ];
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
 
-    $this->patch(route('cms.groups.update', ['group' => $group->id]), array_merge($group_data, $modules));
+    $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), array_merge($group_data, $modules));
 
     $this->assertDatabaseHas('groups', $group_data);
-    $this->assertDatabaseMissing('groups', ['name' => $group->name, 'status' => $group->status]);
+    $this->assertDatabaseMissing('groups', ['gro_name' => $group->gro_name, 'gro_status' => $group->gro_status]);
   }
 
   /** @test */
@@ -124,7 +124,7 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $groups_id = Group::factory(2)->has(Modules::factory(), 'modules')->create()->pluck('id');
+    $groups_id = Group::factory(2)->has(Modules::factory(), 'modules')->create()->pluck('gro_id');
 
     $response = $this->delete(route('cms.groups.destroy', ['group' => $groups_id]));
 
@@ -137,8 +137,8 @@ class GroupsTest extends TestCase
     $this->signIn();
 
     $group_data = [
-      'name' => $this->faker->word(),
-      'status' => $this->faker->boolean()
+      'gro_name' => $this->faker->word(),
+      'gro_status' => $this->faker->boolean()
     ];
 
     $this->post(route('cms.groups.store'), $group_data);

@@ -9,7 +9,7 @@
 <aside class="menu">
   <ul>
     @foreach($groups as $group)
-    <li>{{ $group->name }}</li>
+    <li>{{ $group->gro_name }}</li>
     @endforeach
   </ul>
 </aside>

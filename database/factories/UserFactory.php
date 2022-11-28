@@ -21,7 +21,7 @@ class UserFactory extends Factory
   public function definition()
   {
     return [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
       'usu_email' => fake()->safeEmail(),
       'usu_name' => fake()->name(),
       'usu_token' => Hash::make(Str::random(10)),
