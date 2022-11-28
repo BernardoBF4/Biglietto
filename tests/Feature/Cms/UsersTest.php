@@ -31,7 +31,7 @@ class UsersTest extends TestCase
 
     $password = $this->faker->password(6, 12);
     $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
       'usu_email' => $this->faker->safeEmail(),
       'usu_name' => $this->faker->name(),
       'usu_password' => $password,
@@ -49,7 +49,7 @@ class UsersTest extends TestCase
     $this->signIn();
 
     $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
       'usu_email' => $this->faker->safeEmail(),
       'usu_name' => $this->faker->name(),
       'usu_password' => $this->faker->password(6, 12),
@@ -70,7 +70,7 @@ class UsersTest extends TestCase
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $password = $this->faker->password(6, 12);
     $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
       'usu_email' => $this->faker->safeEmail(),
       'usu_name' => $this->faker->name(),
       'usu_password' => $password,
@@ -109,7 +109,7 @@ class UsersTest extends TestCase
 
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
       'usu_email' => $this->faker->safeEmail(),
       'usu_name' => $this->faker->name(),
     ];
