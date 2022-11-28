@@ -25,17 +25,17 @@ class UserRequest extends FormRequest
   {
     if ($this->__isCreateAction()) {
       $rules = [
-        'email' => 'required|string|email|unique:users,email',
-        'name' => 'required|string|max:255',
-        'password' => 'required|string|min:6|max:12|same:password_confirmation',
-        'password_confirmation' => 'required|string|min:6|max:12|same:password'
+        'usu_email' => 'required|string|email|unique:users,usu_email',
+        'usu_name' => 'required|string|max:255',
+        'usu_password' => 'required|string|min:6|max:12|same:usu_password_confirmation',
+        'usu_password_confirmation' => 'required|string|min:6|max:12|same:usu_password'
       ];
     } else {
       $rules = [
-        'email' => 'required|string|email|unique:users,email',
-        'name' => 'required|string|max:255',
-        'password' => 'required_with:password_confirmation|string|min:6|max:12|same:password_confirmation',
-        'password_confirmation' => 'required_with:password|string|min:6|max:12|same:password'
+        'usu_email' => 'required|string|email|unique:users,usu_email',
+        'usu_name' => 'required|string|max:255',
+        'usu_password' => 'required_with:usu_password_confirmation|string|min:6|max:12|same:usu_password_confirmation',
+        'usu_password_confirmation' => 'required_with:usu_password|string|min:6|max:12|same:usu_password'
       ];
     }
 
@@ -46,15 +46,15 @@ class UserRequest extends FormRequest
   {
     return [
       '*.required' => 'Este campo é obrigatório.',
-      'email.email' => 'O e-mail precisa ser válido.',
-      'email.unique' => 'Este e-mail já está sendo utilizado por algum usuário.',
-      'name.max' => 'O nome pode ter no máximo 255 caracteres.',
-      'password.min' => 'A senha precisa ter no mínimo 6 caracteres.',
-      'password.max' => 'A senha pode ter no máximo 12 caracteres.',
-      'password.same' => 'A senha e confirmação de senha não são iguais.',
-      'password_confirmation.min' => 'A senha precisa ter no mínimo 6 caracteres.',
-      'password_confirmation.max' => 'A senha pode ter no máximo 12 caracteres.',
-      'password_confirmation.same' => 'A senha e confirmação de senha não são iguais.'
+      'usu_email.email' => 'O e-mail precisa ser válido.',
+      'usu_email.unique' => 'Este e-mail já está sendo utilizado por algum usuário.',
+      'usu_name.max' => 'O nome pode ter no máximo 255 caracteres.',
+      'usu_password.min' => 'A senha precisa ter no mínimo 6 caracteres.',
+      'usu_password.max' => 'A senha pode ter no máximo 12 caracteres.',
+      'usu_password.same' => 'A senha e confirmação de senha não são iguais.',
+      'usu_password_confirmation.min' => 'A senha precisa ter no mínimo 6 caracteres.',
+      'usu_password_confirmation.max' => 'A senha pode ter no máximo 12 caracteres.',
+      'usu_password_confirmation.same' => 'A senha e confirmação de senha não são iguais.'
     ];
   }
 

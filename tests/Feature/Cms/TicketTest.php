@@ -27,10 +27,10 @@ class TicketTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $ticket_data = [
-      'fk_events_id' => Event::factory()->create()->id,
-      'name' => $this->faker->name(),
-      'price' => $this->faker->randomNumber(),
-      'status' => $this->faker->boolean(),
+      'fk_events_id' => Event::factory()->create()->eve_id,
+      'tic_title' => $this->faker->name(),
+      'tic_price' => $this->faker->randomNumber(),
+      'tic_status' => $this->faker->boolean(),
     ];
 
     $response = $this->post(route('cms.tickets.store', $ticket_data));
@@ -44,10 +44,10 @@ class TicketTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $ticket_data = [
-      'fk_events_id' => Event::factory()->create()->id,
-      'name' => $this->faker->name(),
-      'price' => $this->faker->randomNumber(),
-      'status' => $this->faker->boolean(),
+      'fk_events_id' => Event::factory()->create()->eve_id,
+      'tic_title' => $this->faker->name(),
+      'tic_price' => $this->faker->randomNumber(),
+      'tic_status' => $this->faker->boolean(),
     ];
 
     $this->post(route('cms.tickets.store', $ticket_data));

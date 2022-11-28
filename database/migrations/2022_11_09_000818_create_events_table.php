@@ -14,12 +14,12 @@ return new class extends Migration
   public function up()
   {
     Schema::create('events', function (Blueprint $table) {
-      $table->id();
-      $table->string('title', 250);
-      $table->boolean('status')->nullable()->default(0);
-      $table->dateTime('start_datetime');
-      $table->dateTime('end_datetime');
-      $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
+      $table->id('eve_id');
+      $table->string('eve_title', 250);
+      $table->boolean('eve_status')->nullable()->default(0);
+      $table->dateTime('eve_start_datetime');
+      $table->dateTime('eve_end_datetime');
+      $table->timestamp('created_at')->useCurrent();
       $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
     });
   }

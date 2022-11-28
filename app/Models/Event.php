@@ -9,11 +9,13 @@ class Event extends Model
 {
   use HasFactory;
 
+  protected $primaryKey = 'eve_id';
+
   protected $fillable = [
-    'end_datetime',
-    'start_datetime',
-    'status',
-    'title',
+    'eve_end_datetime',
+    'eve_start_datetime',
+    'eve_status',
+    'eve_title',
   ];
 
   protected $hidden = [

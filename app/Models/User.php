@@ -12,31 +12,23 @@ class User extends Authenticatable
 {
   use HasApiTokens, HasFactory, Notifiable;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
+  protected $primaryKey = 'usu_id';
+
   protected $fillable = [
-    'email',
     'fk_groups_id',
-    'name',
-    'password',
-    'token',
+    'usu_email',
+    'usu_name',
+    'usu_password',
+    'usu_token',
   ];
 
-  /**
-   * The attributes that should be hidden for serialization.
-   *
-   * @var array<int, string>
-   */
   protected $hidden = [
-    'password',
-    'token',
+    'usu_password',
+    'usu_token',
   ];
 
   public function group()
   {
-    return $this->hasOne(Group::class, 'id', 'fk_groups_id');
+    return $this->belongsTo(Group::class, 'fk_groups_id', 'gro_id');
   }
 }

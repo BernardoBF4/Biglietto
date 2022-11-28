@@ -18,11 +18,11 @@ class EventFactory extends Factory
   public function definition()
   {
     return [
-      'end_datetime' => Carbon::parse(fake()->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'id' => fake()->randomNumber(),
-      'start_datetime' => Carbon::parse(fake()->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => fake()->boolean(),
-      'title' => fake()->name(),
+      'eve_end_datetime' => Carbon::parse(fake()->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_id' => fake()->randomNumber(),
+      'eve_start_datetime' => Carbon::parse(fake()->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => fake()->boolean(),
+      'eve_title' => fake()->name(),
     ];
   }
 }

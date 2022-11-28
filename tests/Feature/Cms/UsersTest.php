@@ -31,11 +31,11 @@ class UsersTest extends TestCase
 
     $password = $this->faker->password(6, 12);
     $user_data = [
-      'email' => $this->faker->safeEmail(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
-      'password' => $password,
-      'password_confirmation' => $password,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
+      'usu_password' => $password,
+      'usu_password_confirmation' => $password,
     ];
 
     $response = $this->post(route('cms.users.store'), $user_data);
@@ -49,17 +49,17 @@ class UsersTest extends TestCase
     $this->signIn();
 
     $user_data = [
-      'email' => $this->faker->safeEmail(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
-      'password' => $this->faker->password(6, 12),
-      'password_confirmation' => $this->faker->password(6, 12),
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
+      'usu_password' => $this->faker->password(6, 12),
+      'usu_password_confirmation' => $this->faker->password(6, 12),
     ];
 
-    $response = $this->post(route('cms.users.store'), $user_data);
+    $this->post(route('cms.users.store'), $user_data);
 
-    $this->checkIfSessionErrorMatchesString('password', 'A senha e confirmação de senha não são iguais.');
-    $this->checkIfSessionErrorMatchesString('password_confirmation', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
   }
 
   /** @test */
@@ -70,14 +70,14 @@ class UsersTest extends TestCase
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $password = $this->faker->password(6, 12);
     $user_data = [
-      'email' => $this->faker->safeEmail(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
-      'password' => $password,
-      'password_confirmation' => $password,
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
+      'usu_password' => $password,
+      'usu_password_confirmation' => $password,
     ];
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->id]), $user_data);
+    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.users.success_update')));
   }
@@ -90,14 +90,14 @@ class UsersTest extends TestCase
     $user = User::all()->last();
     $password = $this->faker->password(6, 12);
     $user_data = [
-      'email' => $this->faker->safeEmail(),
       'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
-      'password' => $password,
-      'password_confirmation' => $password,
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
+      'usu_password' => $password,
+      'usu_password_confirmation' => $password,
     ];
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->id + 1]), $user_data);
+    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id + 1]), $user_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.users.error_user_not_found'), false, 400));
   }
@@ -109,12 +109,12 @@ class UsersTest extends TestCase
 
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
-      'email' => $this->faker->safeEmail(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
     ];
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->id]), $user_data);
+    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.users.success_update')));
   }
@@ -126,17 +126,17 @@ class UsersTest extends TestCase
 
     $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
     $user_data = [
-      'email' => $this->faker->safeEmail(),
       'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => $this->faker->name(),
-      'password' => $this->faker->password(6, 12),
-      'password_confirmation' => $this->faker->password(6, 12),
+      'usu_email' => $this->faker->safeEmail(),
+      'usu_name' => $this->faker->name(),
+      'usu_password' => $this->faker->password(6, 12),
+      'usu_password_confirmation' => $this->faker->password(6, 12),
     ];
 
-    $this->patch(route('cms.users.update', ['user' => $user->id]), $user_data);
+    $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $this->checkIfSessionErrorMatchesString('password', 'A senha e confirmação de senha não são iguais.');
-    $this->checkIfSessionErrorMatchesString('password_confirmation', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
+    $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
   }
 
   /** @test */
@@ -144,7 +144,7 @@ class UsersTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $users_id = User::factory(2)->withPassword($this->faker->password(6, 12))->create()->pluck('id');
+    $users_id = User::factory(2)->withPassword($this->faker->password(6, 12))->create()->pluck('usu_id');
 
     $response = $this->delete(route('cms.users.destroy', $users_id));
 

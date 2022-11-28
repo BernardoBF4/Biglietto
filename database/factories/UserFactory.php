@@ -21,10 +21,10 @@ class UserFactory extends Factory
   public function definition()
   {
     return [
-      'email' => fake()->safeEmail(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'name' => fake()->name(),
-      'token' => Hash::make(Str::random(10)),
+      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'usu_email' => fake()->safeEmail(),
+      'usu_name' => fake()->name(),
+      'usu_token' => Hash::make(Str::random(10)),
     ];
   }
 
@@ -36,7 +36,7 @@ class UserFactory extends Factory
   public function unverified()
   {
     return $this->state(fn (array $attributes) => [
-      'email_verified_at' => null,
+      'usu_email_verified_at' => null,
     ]);
   }
 
@@ -44,7 +44,7 @@ class UserFactory extends Factory
   {
     return $this->state(function () use ($password) {
       return [
-        'password' => bcrypt($password)
+        'usu_password' => bcrypt($password)
       ];
     });
   }

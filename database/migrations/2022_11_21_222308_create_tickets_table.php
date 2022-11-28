@@ -14,12 +14,12 @@ return new class extends Migration
   public function up()
   {
     Schema::create('tickets', function (Blueprint $table) {
-      $table->id();
-      $table->string('name', 255);
-      $table->integer('price');
-      $table->boolean('status');
-      $table->foreignId('fk_events_id')->constrained('events', 'id');
-      $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
+      $table->id('tic_id');
+      $table->string('tic_title', 255);
+      $table->integer('tic_price');
+      $table->boolean('tic_status');
+      $table->foreignId('fk_events_id')->constrained('events', 'eve_id');
+      $table->timestamp('created_at')->useCurrent();
       $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
     });
   }

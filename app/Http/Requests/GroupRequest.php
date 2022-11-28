@@ -27,8 +27,8 @@ class GroupRequest extends FormRequest
   public function rules()
   {
     return [
-      'name' => 'string|max:100|required',
-      'status' => 'boolean|nullable',
+      'gro_name' => 'string|max:100|required',
+      'gro_status' => 'boolean|nullable',
       'modules' => [
         'required',
         fn ($attribute, $value, $fail) => $this->areModulesValidModules($attribute, $value, $fail),
@@ -39,8 +39,8 @@ class GroupRequest extends FormRequest
   public function messages()
   {
     return [
-      'name.max' => 'O nome pode ter 100 caracteres no máximo.',
-      'name.required' => 'O nome precisa ser preenchido.',
+      'gro_name.max' => 'O nome pode ter 100 caracteres no máximo.',
+      'gro_name.required' => 'O nome precisa ser preenchido.',
       'modules.required' => 'O grupo precisa de pelo menos um módulo.'
     ];
   }

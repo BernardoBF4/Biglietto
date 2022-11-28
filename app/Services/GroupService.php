@@ -42,7 +42,7 @@ class GroupService implements CRUD
 
   public function delete(string $ids)
   {
-    Group::whereIn('id', json_decode($ids))->delete();
+    Group::whereIn('gro_id', json_decode($ids))->delete();
     return cms_response(trans('cms.groups.success_delete'));
   }
 

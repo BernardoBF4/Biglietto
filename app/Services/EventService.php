@@ -29,7 +29,7 @@ class EventService implements CRUD
 
   public function delete(string $ids)
   {
-    Event::whereIn('id', json_decode($ids))->delete();
+    Event::whereIn('eve_id', json_decode($ids))->delete();
     return cms_response(trans('cms.events.success_delete'));
   }
 

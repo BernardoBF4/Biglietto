@@ -11,8 +11,8 @@ class CmsUserService implements CRUD
 {
   public function create(array $data)
   {
-    $data['token'] = Hash::make($data['email']);
-    $data['password'] = Hash::make($data['password']);
+    $data['usu_token'] = Hash::make($data['usu_email']);
+    $data['usu_password'] = Hash::make($data['usu_password']);
     User::create($data);
 
     return cms_response(trans('cms.users.success_create'));
@@ -21,8 +21,8 @@ class CmsUserService implements CRUD
   public function update(int $id, array $data)
   {
     try {
-      if (array_key_exists('password', $data)) {
-        $data['password'] = Hash::make($data['password']);
+      if (array_key_exists('usu_password', $data)) {
+        $data['usu_password'] = Hash::make($data['usu_password']);
       }
 
       $user = $this->__findOrFail($id);
@@ -36,7 +36,7 @@ class CmsUserService implements CRUD
 
   public function delete(string $ids)
   {
-    User::whereIn('id', json_decode($ids))->delete();
+    User::whereIn('usu_id', json_decode($ids))->delete();
     return cms_response(trans('cms.users.success_delete'));
   }
 

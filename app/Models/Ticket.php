@@ -9,23 +9,15 @@ class Ticket extends Model
 {
   use HasFactory;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
+  protected $primaryKey = 'tic_id';
+
   protected $fillable = [
     'fk_events_id',
-    'name',
-    'price',
-    'status',
+    'tic_price',
+    'tic_status',
+    'tic_title',
   ];
 
-  /**
-   * The attributes that should be hidden for serialization.
-   *
-   * @var array<int, string>
-   */
   protected $hidden = [
     'created_at',
     'updated_at',
@@ -33,6 +25,6 @@ class Ticket extends Model
 
   public function event()
   {
-    return $this->belongsTo(Event::class, 'fk_events_id');
+    return $this->belongsTo(Event::class, 'fk_events_id', 'eve_id');
   }
 }
