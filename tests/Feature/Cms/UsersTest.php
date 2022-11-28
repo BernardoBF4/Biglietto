@@ -150,4 +150,12 @@ class UsersTest extends TestCase
 
     $response->assertSessionHas('response', cms_response(trans('cms.users.success_delete')));
   }
+
+  /** @test */
+  public function a_user_belongs_to_a_group()
+  {
+    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
+
+    $this->assertInstanceOf(Group::class, $user->group);
+  }
 }
