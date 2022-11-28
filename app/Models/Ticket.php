@@ -33,6 +33,6 @@ class Ticket extends Model
 
   public function event()
   {
-    return $this->belongsTo(Event::class, 'fk_events_id');
+    return $this->belongsTo(Event::class, 'fk_events_id', 'eve_id');
   }
 }

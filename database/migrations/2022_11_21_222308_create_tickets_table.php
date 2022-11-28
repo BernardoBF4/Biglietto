@@ -18,7 +18,7 @@ return new class extends Migration
       $table->string('name', 255);
       $table->integer('price');
       $table->boolean('status');
-      $table->foreignId('fk_events_id')->constrained('events', 'id');
+      $table->foreignId('fk_events_id')->constrained('events', 'eve_id');
       $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
       $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
     });

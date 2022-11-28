@@ -24,10 +24,10 @@ class EventRequest extends FormRequest
   public function rules()
   {
     return [
-      'status' => 'nullable|boolean',
-      'title' => 'required|string|max:250',
-      'start_datetime' => 'required|date|before:end_datetime',
-      'end_datetime' => 'required|date|after:start_datetime',
+      'eve_status' => 'nullable|boolean',
+      'eve_title' => 'required|string|max:250',
+      'eve_start_datetime' => 'required|date|before:eve_end_datetime',
+      'eve_end_datetime' => 'required|date|after:eve_start_datetime',
     ];
   }
 
@@ -35,10 +35,10 @@ class EventRequest extends FormRequest
   {
     return [
       '*.required' => 'Este campo é obirgatório.',
-      'title.max' => 'O máximo de caracteres é 250.',
+      'eve_title.max' => 'O máximo de caracteres é 250.',
       '*.date' => 'Por favor, selecione uma data válida.',
-      'start_datetime.before' => 'A data de início não pode ser maior que a data de término.',
-      'end_datetime.after' => 'A data de início não pode ser maior que a data de término.',
+      'eve_start_datetime.before' => 'A data de início não pode ser maior que a data de término.',
+      'eve_end_datetime.after' => 'A data de início não pode ser maior que a data de término.',
     ];
   }
 }

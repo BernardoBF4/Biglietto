@@ -28,10 +28,10 @@ class EventTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
 
     $response = $this->post(route('cms.events.store', $event_data));
@@ -45,10 +45,10 @@ class EventTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
 
     $this->post(route('cms.events.store', $event_data));
@@ -62,16 +62,16 @@ class EventTest extends TestCase
     $this->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
 
     $this->post(route('cms.events.store', $event_data));
 
-    $this->checkIfSessionErrorMatchesString('start_datetime', 'A data de início não pode ser maior que a data de término.');
-    $this->checkIfSessionErrorMatchesString('end_datetime', 'A data de início não pode ser maior que a data de término.');
+    $this->checkIfSessionErrorMatchesString('eve_start_datetime', 'A data de início não pode ser maior que a data de término.');
+    $this->checkIfSessionErrorMatchesString('eve_end_datetime', 'A data de início não pode ser maior que a data de término.');
   }
 
   /** @test */
@@ -80,16 +80,16 @@ class EventTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
     $event = Event::factory()->create();
 
-    $response = $this->patch(route('cms.events.update', $event->id), $event_data);
+    $response = $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.events.success_update'), true, 200));
+    $response->assertSessionHas('response', cms_response(trans('cms.events.success_update')));
   }
 
   /** @test */
@@ -98,14 +98,14 @@ class EventTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
     $event = Event::factory()->create()->toArray();
 
-    $this->patch(route('cms.events.update', $event['id']), $event_data);
+    $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
 
     $this->assertDatabaseHas('events', $event_data);
     $this->assertDatabaseMissing('events', $event);
@@ -117,14 +117,14 @@ class EventTest extends TestCase
     $this->withoutExceptionHandling()->signIn();
 
     $event_data = [
-      'end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'status' => $this->faker->boolean(),
-      'title' => $this->faker->name(),
+      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+      'eve_status' => $this->faker->boolean(),
+      'eve_title' => $this->faker->name(),
     ];
     $event = Event::factory()->create();
 
-    $response = $this->patch(route('cms.events.update', $event->id + 1), $event_data);
+    $response = $this->patch(route('cms.events.update', $event->eve_id + 1), $event_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.events.error_not_found'), false, 400));
   }
@@ -134,10 +134,10 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $users_id = Event::factory(2)->create()->pluck('id');
+    $users_id = Event::factory(2)->create()->pluck('eve_id');
 
     $response = $this->delete(route('cms.events.destroy', $users_id));
 
-    $response->assertSessionHas('response', cms_response(trans('cms.events.success_delete'), true, 200));
+    $response->assertSessionHas('response', cms_response(trans('cms.events.success_delete')));
   }
 }
