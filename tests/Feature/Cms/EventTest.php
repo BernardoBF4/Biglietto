@@ -78,8 +78,8 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = Event::factory()->make()->toArray();
     $event = Event::factory()->create()->toArray();
+    $event_data = Event::factory()->make()->toArray();
 
     $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
 
@@ -92,8 +92,8 @@ class EventTest extends TestCase
   {
     $this->signIn();
 
-    $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
     $event = Event::factory()->create()->toArray();
+    $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
 
     $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
 
@@ -106,8 +106,8 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = Event::factory()->make()->toArray();
     $event = Event::factory()->create();
+    $event_data = Event::factory()->make()->toArray();
 
     $response = $this->patch(route('cms.events.update', $event->eve_id + 1), $event_data);
 
