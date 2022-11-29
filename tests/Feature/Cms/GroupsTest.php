@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class GroupsTest extends TestCase
 {
-  use WithFaker;
+  use WithFaker, RefreshDatabase;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
@@ -21,17 +21,6 @@ class GroupsTest extends TestCase
     $response = $this->get(route('cms.groups.index'));
 
     $response->assertRedirect();
-  }
-
-  /** @test */
-  public function a_user_can_see_the_listing_of_groups()
-  {
-    $this->withoutExceptionHandling()->signIn();
-
-    $group = Group::factory()->create();
-
-    $response = $this->get('/cms/groups');
-    $response->assertSee($group->gro_name);
   }
 
   /** @test */
