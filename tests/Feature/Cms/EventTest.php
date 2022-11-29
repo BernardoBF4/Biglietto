@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class EventTest extends TestCase
 {
-  use WithFaker, RefreshDatabase;
+  use WithFaker;
 
   /** @test */
   public function unauthenticated_users_are_redirected()
@@ -28,16 +28,11 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
+    $event_data = Event::factory()->make()->toArray();
 
     $response = $this->post(route('cms.events.store', $event_data));
 
-    $response->assertSessionHas('response', cms_response(trans('cms.events.success_create'), true, 200));
+    $response->assertSessionHas('response', cms_response(trans('cms.events.success_create')));
   }
 
   /** @test */
@@ -45,12 +40,7 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
+    $event_data = Event::factory()->make()->toArray();
 
     $this->post(route('cms.events.store', $event_data));
 
@@ -62,12 +52,7 @@ class EventTest extends TestCase
   {
     $this->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
+    $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
 
     $this->post(route('cms.events.store', $event_data));
 
@@ -80,13 +65,8 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
     $event = Event::factory()->create();
+    $event_data = Event::factory()->make()->toArray();
 
     $response = $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 
@@ -98,12 +78,7 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
+    $event_data = Event::factory()->make()->toArray();
     $event = Event::factory()->create()->toArray();
 
     $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
@@ -117,12 +92,7 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event_data = [
-      'eve_end_datetime' => Carbon::parse($this->faker->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_start_datetime' => Carbon::parse($this->faker->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
-      'eve_status' => $this->faker->boolean(),
-      'eve_title' => $this->faker->name(),
-    ];
+    $event_data = Event::factory()->make()->toArray();
     $event = Event::factory()->create();
 
     $response = $this->patch(route('cms.events.update', $event->eve_id + 1), $event_data);

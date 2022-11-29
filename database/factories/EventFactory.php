@@ -19,10 +19,19 @@ class EventFactory extends Factory
   {
     return [
       'eve_end_datetime' => Carbon::parse(fake()->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
-      'eve_id' => fake()->randomNumber(),
       'eve_start_datetime' => Carbon::parse(fake()->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
       'eve_status' => fake()->boolean(),
       'eve_title' => fake()->name(),
     ];
+  }
+
+  public function withEndDateSmallerThanStartDate()
+  {
+    return $this->state(function () {
+      return [
+        'eve_end_datetime' => Carbon::parse(fake()->dateTimeBetween('+1 day', '+2 days'))->format('Y-m-d H:i:s'),
+        'eve_start_datetime' => Carbon::parse(fake()->dateTimeBetween('+3 day', '+4 days'))->format('Y-m-d H:i:s'),
+      ];
+    });
   }
 }
