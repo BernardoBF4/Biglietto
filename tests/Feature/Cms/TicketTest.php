@@ -3,6 +3,7 @@
 namespace Tests\Feature\Cms;
 
 use App\Models\Event;
+use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -26,12 +27,7 @@ class TicketTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $ticket_data = [
-      'fk_events_id' => Event::factory()->create()->eve_id,
-      'tic_title' => $this->faker->name(),
-      'tic_price' => $this->faker->randomNumber(),
-      'tic_status' => $this->faker->boolean(),
-    ];
+    $ticket_data = Ticket::factory()->make()->toArray();
 
     $response = $this->post(route('cms.tickets.store', $ticket_data));
 
@@ -43,12 +39,7 @@ class TicketTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $ticket_data = [
-      'fk_events_id' => Event::factory()->create()->eve_id,
-      'tic_title' => $this->faker->name(),
-      'tic_price' => $this->faker->randomNumber(),
-      'tic_status' => $this->faker->boolean(),
-    ];
+    $ticket_data = Ticket::factory()->make()->toArray();
 
     $this->post(route('cms.tickets.store', $ticket_data));
 
