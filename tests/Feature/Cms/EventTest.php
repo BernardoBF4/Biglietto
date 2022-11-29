@@ -88,6 +88,20 @@ class EventTest extends TestCase
   }
 
   /** @test */
+  public function an_event_cannot_be_updated_with_end_date_being_smaller_than_start_date()
+  {
+    $this->signIn();
+
+    $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
+    $event = Event::factory()->create()->toArray();
+
+    $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
+
+    $this->checkIfSessionErrorMatchesString('eve_start_datetime', 'A data de início não pode ser maior que a data de término.');
+    $this->checkIfSessionErrorMatchesString('eve_end_datetime', 'A data de início não pode ser maior que a data de término.');
+  }
+
+  /** @test */
   public function when_updating_an_event_if_not_found_an_error_is_returned()
   {
     $this->withoutExceptionHandling()->signIn();
