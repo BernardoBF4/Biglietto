@@ -28,13 +28,9 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group_data = [
-      'gro_name' => $this->faker->word(),
-      'gro_status' => $this->faker->boolean(),
-    ];
-    $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
+    $group_data = Group::factory()->withModule()->make()->toArray();
 
-    $response = $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
+    $response = $this->post(route('cms.groups.store'), $group_data);
 
     $response->assertSessionHas('response', cms_response(trans('cms.groups.success_create')));
   }
@@ -44,10 +40,7 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group_data = [
-      'gro_name' => $this->faker->word(),
-      'gro_status' => $this->faker->boolean(),
-    ];
+    $group_data = Group::factory()->make()->toArray();
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
 
     $this->post(route('cms.groups.store'), array_merge($group_data, $modules));
@@ -62,12 +55,8 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group_data = [
-      'modules' => Modules::factory(1)->create()->pluck('id'),
-      'gro_name' => $this->faker->word(),
-      'gro_status' => $this->faker->boolean(),
-    ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group_data = Group::factory()->withModule()->make()->toArray();
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), $group_data);
 
@@ -75,16 +64,12 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_updating_a_group_if_it_snt_found_an_error_is_returned()
+  public function when_updating_a_group_if_it_isnt_found_an_error_is_returned()
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group_data = [
-      'modules' => Modules::factory(1)->create()->pluck('id'),
-      'gro_name' => $this->faker->word(),
-      'gro_tatus' => $this->faker->boolean(),
-    ];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group_data = Group::factory()->withModule()->make()->toArray();
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id + 1]), $group_data);
 
@@ -96,12 +81,9 @@ class GroupsTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $group_data = [
-      'gro_name' => $this->faker->word(),
-      'gro_status' => $this->faker->boolean(),
-    ];
-    $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
     $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group_data = Group::factory()->make()->toArray();
+    $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
 
     $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), array_merge($group_data, $modules));
 
@@ -126,10 +108,7 @@ class GroupsTest extends TestCase
   {
     $this->signIn();
 
-    $group_data = [
-      'gro_name' => $this->faker->word(),
-      'gro_status' => $this->faker->boolean()
-    ];
+    $group_data = Group::factory()->make()->toArray();
 
     $this->post(route('cms.groups.store'), $group_data);
 

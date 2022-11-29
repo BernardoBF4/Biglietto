@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Modules;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,5 +21,14 @@ class GroupFactory extends Factory
       'gro_name' => fake()->word(),
       'gro_status' => fake()->boolean(),
     ];
+  }
+
+  public function withModule()
+  {
+    return $this->state(function () {
+      return [
+        'modules' => Modules::factory(1)->create()->pluck('id'),
+      ];
+    });
   }
 }
