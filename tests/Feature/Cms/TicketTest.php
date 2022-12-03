@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Cms;
 
+use App\Models\Lot;
 use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -95,5 +96,17 @@ class TicketTest extends TestCase
     $response = $this->delete(route('cms.tickets.destroy', ['ticket' => $ticket_ids]));
 
     $response->assertSessionHas('response', cms_response(__('ticket.success.delete')));
+  }
+
+  /** @test */
+  public function a_ticket_can_have_multiple_lots()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket = Ticket::factory()->create();
+    Lot::factory(2)->withTicket($ticket->tic_id)->create();
+
+    $this->assertInstanceOf(Lot::class, $ticket->lots[0]);
+    $this->assertInstanceOf(Lot::class, $ticket->lots[1]);
   }
 }

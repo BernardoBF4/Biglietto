@@ -27,4 +27,9 @@ class Ticket extends Model
   {
     return $this->belongsTo(Event::class, 'fk_events_id', 'eve_id');
   }
+
+  public function lots()
+  {
+    return $this->hasMany(Lot::class, 'fk_tickets_id', 'tic_id');
+  }
 }
