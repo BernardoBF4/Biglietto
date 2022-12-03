@@ -31,7 +31,7 @@ class TicketTest extends TestCase
 
     $response = $this->post(route('cms.tickets.store', $ticket_data));
 
-    $response->assertSessionHas('response', cms_response(trans('ticket.success.create')));
+    $response->assertSessionHas('response', cms_response(__('ticket.success.create')));
   }
 
   /** @test */
@@ -56,7 +56,7 @@ class TicketTest extends TestCase
 
     $response = $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id]), $ticket_data);
 
-    $response->assertSessionHas('response', cms_response(trans('ticket.success.update')));
+    $response->assertSessionHas('response', cms_response(__('ticket.success.update')));
   }
 
   /** @test */
@@ -83,6 +83,6 @@ class TicketTest extends TestCase
 
     $response = $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id + 1]), $ticket_data);
 
-    $response->assertSessionHas('response', cms_response(trans('ticket.error.not_found'), false, 400));
+    $response->assertSessionHas('response', cms_response(__('ticket.error.not_found'), false, 400));
   }
 }

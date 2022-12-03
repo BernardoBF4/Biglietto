@@ -12,7 +12,7 @@ class EventService implements CRUD
   public function create(array $data)
   {
     Event::create($data);
-    return cms_response(trans('cms.events.success_create'));
+    return cms_response(__('events.success.create'));
   }
 
   public function update(int $id, array $data)
@@ -21,7 +21,7 @@ class EventService implements CRUD
       $event = $this->__findOrFail($id);
       $event->update($data);
 
-      return cms_response(trans('cms.events.success_update'));
+      return cms_response(__('events.success.update'));
     } catch (\Throwable $th) {
       return cms_response($th->getMessage(), false, 400);
     }
@@ -30,7 +30,7 @@ class EventService implements CRUD
   public function delete(string $ids)
   {
     Event::whereIn('eve_id', json_decode($ids))->delete();
-    return cms_response(trans('cms.events.success_delete'));
+    return cms_response(__('events.success.delete'));
   }
 
   private function __findOrFail(int $id)
@@ -39,6 +39,6 @@ class EventService implements CRUD
     if ($event instanceof Event) {
       return $event;
     }
-    throw new Exception(trans('cms.events.error_not_found'));
+    throw new Exception(__('events.error.not_found'));
   }
 }

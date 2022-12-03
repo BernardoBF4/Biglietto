@@ -40,7 +40,7 @@ class UsersTest extends TestCase
 
     $response = $this->post(route('cms.users.store'), $user_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.users.success_create')));
+    $response->assertSessionHas('response', cms_response(__('users.success.create')));
   }
 
   /** @test */
@@ -79,7 +79,7 @@ class UsersTest extends TestCase
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.users.success_update')));
+    $response->assertSessionHas('response', cms_response(__('users.success.update')));
   }
 
   /** @test */
@@ -99,7 +99,7 @@ class UsersTest extends TestCase
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id + 1]), $user_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.users.error_user_not_found'), false, 400));
+    $response->assertSessionHas('response', cms_response(__('users.error.not_found'), false, 400));
   }
 
   /** @test */
@@ -116,7 +116,7 @@ class UsersTest extends TestCase
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.users.success_update')));
+    $response->assertSessionHas('response', cms_response(__('users.success.update')));
   }
 
   /** @test */
@@ -148,7 +148,7 @@ class UsersTest extends TestCase
 
     $response = $this->delete(route('cms.users.destroy', $users_id));
 
-    $response->assertSessionHas('response', cms_response(trans('cms.users.success_delete')));
+    $response->assertSessionHas('response', cms_response(__('users.success.delete')));
   }
 
   /** @test */
