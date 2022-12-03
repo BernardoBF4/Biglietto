@@ -85,4 +85,16 @@ class TicketTest extends TestCase
 
     $response->assertSessionHas('response', cms_response(__('ticket.error.not_found'), false, 400));
   }
+
+  /** @test */
+  public function multiple_tickets_can_be_deleted()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket_ids = Ticket::factory(2)->create()->pluck('tic_id');
+
+    $response = $this->delete(route('cms.tickets.destroy', ['ticket' => $ticket_ids]));
+
+    $response->assertSessionHas('response', cms_response(__('ticket.success.delete')));
+  }
 }

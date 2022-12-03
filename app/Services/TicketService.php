@@ -28,6 +28,8 @@ class TicketService implements CRUD
 
   public function delete(string $ids)
   {
+    Ticket::whereIn('tic_id', json_decode($ids))->delete();
+    return cms_response(__('ticket.success.delete'));
   }
 
   private function __findOrFail(int $id)

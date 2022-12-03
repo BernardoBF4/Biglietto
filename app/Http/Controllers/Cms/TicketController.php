@@ -86,11 +86,12 @@ class TicketController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param  string  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy(string $ticket_ids)
   {
-    //
+    $result = $this->ticket_service->delete($ticket_ids);
+    return redirect()->back()->with('response', $result);
   }
 }
