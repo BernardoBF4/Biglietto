@@ -32,7 +32,7 @@ class EventTest extends TestCase
 
     $response = $this->post(route('cms.events.store', $event_data));
 
-    $response->assertSessionHas('response', cms_response(__('events.success.create')));
+    $response->assertSessionHas('response', cms_response(__('event.success.create')));
   }
 
   /** @test */
@@ -70,7 +70,7 @@ class EventTest extends TestCase
 
     $response = $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 
-    $response->assertSessionHas('response', cms_response(__('events.success.update')));
+    $response->assertSessionHas('response', cms_response(__('event.success.update')));
   }
 
   /** @test */
@@ -111,7 +111,7 @@ class EventTest extends TestCase
 
     $response = $this->patch(route('cms.events.update', $event->eve_id + 1), $event_data);
 
-    $response->assertSessionHas('response', cms_response(__('events.error.not_found'), false, 400));
+    $response->assertSessionHas('response', cms_response(__('event.error.not_found'), false, 400));
   }
 
   /** @test */
@@ -123,7 +123,7 @@ class EventTest extends TestCase
 
     $response = $this->delete(route('cms.events.destroy', $users_id));
 
-    $response->assertSessionHas('response', cms_response(__('events.success.delete')));
+    $response->assertSessionHas('response', cms_response(__('event.success.delete')));
   }
 
   /** @test */

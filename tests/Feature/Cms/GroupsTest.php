@@ -32,7 +32,7 @@ class GroupsTest extends TestCase
 
     $response = $this->post(route('cms.groups.store'), $group_data);
 
-    $response->assertSessionHas('response', cms_response(__('groups.success.create')));
+    $response->assertSessionHas('response', cms_response(__('group.success.create')));
   }
 
   /** @test */
@@ -60,7 +60,7 @@ class GroupsTest extends TestCase
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), $group_data);
 
-    $response->assertSessionHas('response', cms_response(__('groups.success.update')));
+    $response->assertSessionHas('response', cms_response(__('group.success.update')));
   }
 
   /** @test */
@@ -73,7 +73,7 @@ class GroupsTest extends TestCase
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id + 1]), $group_data);
 
-    $response->assertSessionHas('response', cms_response(__('groups.error.not_found'), false, 400));
+    $response->assertSessionHas('response', cms_response(__('group.error.not_found'), false, 400));
   }
 
   /** @test */
@@ -100,7 +100,7 @@ class GroupsTest extends TestCase
 
     $response = $this->delete(route('cms.groups.destroy', ['group' => $groups_id]));
 
-    $response->assertSessionHas('response', cms_response(__('groups.success.delete')));
+    $response->assertSessionHas('response', cms_response(__('group.success.delete')));
   }
 
   /** @test */

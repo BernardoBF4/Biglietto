@@ -20,7 +20,7 @@ class GroupService implements CRUD
     $group = Group::create($data);
     $group->modules()->attach($modules_id);
 
-    return cms_response(__('groups.success.create'));
+    return cms_response(__('group.success.create'));
   }
 
   public function update(int $id, array $data)
@@ -33,7 +33,7 @@ class GroupService implements CRUD
       $group->update($data);
       $group->modules()->sync($modules_ids);
 
-      return cms_response(__('groups.success.update'));
+      return cms_response(__('group.success.update'));
     } catch (\Throwable $th) {
       return cms_response($th->getMessage(), false, 400);
     }
@@ -43,7 +43,7 @@ class GroupService implements CRUD
   public function delete(string $ids)
   {
     Group::whereIn('gro_id', json_decode($ids))->delete();
-    return cms_response(__('groups.success.delete'));
+    return cms_response(__('group.success.delete'));
   }
 
   private function __findOrFail(int $id)
@@ -52,6 +52,6 @@ class GroupService implements CRUD
     if ($group instanceof Group) {
       return $group;
     }
-    throw new Exception(__('groups.error.not_found'));
+    throw new Exception(__('group.error.not_found'));
   }
 }

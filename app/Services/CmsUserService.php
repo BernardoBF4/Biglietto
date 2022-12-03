@@ -15,7 +15,7 @@ class CmsUserService implements CRUD
     $data['usu_password'] = Hash::make($data['usu_password']);
     User::create($data);
 
-    return cms_response(__('users.success.create'));
+    return cms_response(__('user.success.create'));
   }
 
   public function update(int $id, array $data)
@@ -28,7 +28,7 @@ class CmsUserService implements CRUD
       $user = $this->__findOrFail($id);
       $user->update($data);
 
-      return cms_response(__('users.success.update'));
+      return cms_response(__('user.success.update'));
     } catch (\Throwable $th) {
       return cms_response($th->getMessage(), false, 400);
     }
@@ -37,7 +37,7 @@ class CmsUserService implements CRUD
   public function delete(string $ids)
   {
     User::whereIn('usu_id', json_decode($ids))->delete();
-    return cms_response(__('users.success.delete'));
+    return cms_response(__('user.success.delete'));
   }
 
   private function __findOrFail(int $id)
@@ -46,6 +46,6 @@ class CmsUserService implements CRUD
     if ($user instanceof User) {
       return $user;
     }
-    throw new Exception(__('users.error.not_found'));
+    throw new Exception(__('user.error.not_found'));
   }
 }
