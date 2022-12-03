@@ -58,4 +58,18 @@ class TicketTest extends TestCase
 
     $response->assertSessionHas('response', cms_response(trans('cms.ticket.success_update')));
   }
+
+  /** @test */
+  public function updating_a_ticket_persists_its_data_to_the_database_and_removes_the_old_data()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket = Ticket::factory()->create();
+    $ticket_data = Ticket::factory()->make()->toArray();
+
+    $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id]), $ticket_data);
+
+    $this->assertDatabaseHas('tickets', $ticket_data);
+    $this->assertDatabaseMissing('tickets', $ticket->toArray());
+  }
 }
