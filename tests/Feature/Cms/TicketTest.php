@@ -31,7 +31,7 @@ class TicketTest extends TestCase
 
     $response = $this->post(route('cms.tickets.store', $ticket_data));
 
-    $response->assertSessionHas('response', cms_response(trans('cms.ticket.success_create')));
+    $response->assertSessionHas('response', cms_response(trans('ticket.success.create')));
   }
 
   /** @test */
@@ -56,7 +56,7 @@ class TicketTest extends TestCase
 
     $response = $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id]), $ticket_data);
 
-    $response->assertSessionHas('response', cms_response(trans('cms.ticket.success_update')));
+    $response->assertSessionHas('response', cms_response(trans('ticket.success.update')));
   }
 
   /** @test */
@@ -71,5 +71,18 @@ class TicketTest extends TestCase
 
     $this->assertDatabaseHas('tickets', $ticket_data);
     $this->assertDatabaseMissing('tickets', $ticket->toArray());
+  }
+
+  /** @test */
+  public function when_updating_a_ticket_if_not_found_an_error_is_returned()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket = Ticket::factory()->create();
+    $ticket_data = Ticket::factory()->make()->toArray();
+
+    $response = $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id + 1]), $ticket_data);
+
+    $response->assertSessionHas('response', cms_response(trans('ticket.error.not_found'), false, 400));
   }
 }

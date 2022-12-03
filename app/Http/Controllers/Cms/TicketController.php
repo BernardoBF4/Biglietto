@@ -77,9 +77,9 @@ class TicketController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Ticket $ticket, Request $request)
+  public function update(Request $request, int $id)
   {
-    $response = $this->ticket_service->update($ticket, $request->all());
+    $response = $this->ticket_service->update($id, $request->all());
     return redirect()->back()->with('response', $response);
   }
 
