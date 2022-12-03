@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ticket;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
 
@@ -76,9 +77,10 @@ class TicketController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Ticket $ticket, Request $request)
   {
-    //
+    $response = $this->ticket_service->update($ticket, $request->all());
+    return redirect()->back()->with('response', $response);
   }
 
   /**

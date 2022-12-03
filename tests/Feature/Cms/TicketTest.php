@@ -35,7 +35,7 @@ class TicketTest extends TestCase
   }
 
   /** @test */
-  public function when_a_test_is_created_its_data_is_persisted_to_the_database()
+  public function when_a_ticket_is_created_its_data_is_persisted_to_the_database()
   {
     $this->withoutExceptionHandling()->signIn();
 
@@ -44,5 +44,18 @@ class TicketTest extends TestCase
     $this->post(route('cms.tickets.store', $ticket_data));
 
     $this->assertDatabaseHas('tickets', $ticket_data);
+  }
+
+  /** @test */
+  public function a_ticket_can_be_updated()
+  {
+    $this->withoutExceptionHandling()->signIn();
+
+    $ticket = Ticket::factory()->create();
+    $ticket_data = Ticket::factory()->make()->toArray();
+
+    $response = $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id]), $ticket_data);
+
+    $response->assertSessionHas('response', cms_response(trans('cms.ticket.success_update')));
   }
 }

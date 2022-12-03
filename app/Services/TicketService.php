@@ -3,10 +3,9 @@
 namespace App\Services;
 
 use App\Models\Ticket;
-use App\Interfaces\CRUD;
 use Exception;
 
-class TicketService implements CRUD
+class TicketService
 {
 
   public function create(array $data)
@@ -15,8 +14,10 @@ class TicketService implements CRUD
     return cms_response(trans('cms.ticket.success_create'));
   }
 
-  public function update(int $id, array $data)
+  public function update(?Ticket $ticket, array $data)
   {
+    $ticket->update($data);
+    return cms_response(trans('cms.ticket.success_update'));
   }
 
   public function delete(string $ids)
