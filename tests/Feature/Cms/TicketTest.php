@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Cms;
 
-use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
