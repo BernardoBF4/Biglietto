@@ -12,10 +12,10 @@ class Ticket extends Model
   protected $primaryKey = 'tic_id';
 
   protected $fillable = [
-    'fk_events_id',
     'tic_price',
     'tic_status',
     'tic_title',
+    'fk_events_id',
   ];
 
   protected $hidden = [
