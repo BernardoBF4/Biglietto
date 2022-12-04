@@ -9,26 +9,32 @@ use Throwable;
 
 class AuthService
 {
-  protected ?User $user;
-  protected array $data;
-
-  public function __construct(?User $user, array $data)
+  public function login(array $credentials)
   {
-    $this->user = $user;
-    $this->data = $data;
-  }
+    try {
+      $user = User::where('usu_email', $credentials['usu_email'])->first();
 
-  public function redirectUserIfAlreadyLoggedIn()
-  {
-    if (auth()->check()) {
-      throw new Exception('Você já está logado.');
+      $this->isUserAlreadyLogged();
+      $this->isPasswordCorrect($user->usu_password, $credentials['usu_password']);
+      auth()->login($user);
+
+      return redirect()->to(route('cms.groups.index'));
+    } catch (Throwable $th) {
+      return redirect()->back()->with('response', cms_response($th->getMessage(), false, 400));
     }
   }
 
-  public function redirectUserIfPasswordIsIncorrect()
+  private function isUserAlreadyLogged()
   {
-    if (!Hash::check($this->data['password'], $this->user->password)) {
-      throw new Exception('A senha está incorreta.');
+    if (auth()->check()) {
+      throw new Exception(__('auth.error.already_logged'));
+    }
+  }
+
+  private function isPasswordCorrect($user_password, $typed_password)
+  {
+    if (!Hash::check($typed_password, $user_password)) {
+      throw new Exception(__('auth.error.wrong_password'));
     }
   }
 }

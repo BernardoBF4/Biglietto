@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\Cms\AuthController;
 use App\Http\Controllers\Cms\EventController;
 use App\Http\Controllers\Cms\GroupController;
 use App\Http\Controllers\Cms\TicketController;

@@ -27,7 +27,7 @@ class AuthTest extends TestCase
 
     $password = Str::random(10);
     $user = User::factory()->withPassword($password)->create();
-    $data = ['email' => $user->email, 'password' => $password];
+    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     $response = $this->post(route('cms.auth.log_user'), $data);
 
@@ -41,12 +41,11 @@ class AuthTest extends TestCase
 
     $password = Str::random(10);
     $user = User::factory()->withPassword(Str::random(10))->create();
-    $data = ['email' => $user->email, 'password' => $password];
+    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
-    $response = $this->post('/cms/auth/login', $data);
+    $response = $this->post(route('cms.auth.log_user'), $data);
 
-    $response->assertSessionHas('message', 'A senha está incorreta.');
-    $response->assertStatus(302);
+    $response->assertSessionHas('response', cms_response(__('auth.error.wrong_password'), false, 400));
   }
 
   /** @test */
@@ -56,25 +55,21 @@ class AuthTest extends TestCase
 
     $password = Str::random(10);
     $user = User::factory()->withPassword($password)->create();
-    $data = ['email' => $user->email, 'password' => $password];
+    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     auth()->login($user);
-    $response = $this->post('/cms/auth/login', $data);
+    $response = $this->post(route('cms.auth.log_user'), $data);
 
-    $response->assertSessionHas('message', 'Você já está logado.');
-    $response->assertStatus(302);
+    $response->assertSessionHas('response', cms_response(__('auth.error.already_logged'), false, 400));
   }
 
   /** @test */
-  public function a_user_is_redirected_if_not_found()
+  public function a_user_receives_an_error_message_if_not_found()
   {
-    // $this->withoutExceptionHandling();
+    $data = ['usu_email' => $this->faker->safeEmail(), 'usu_password' => Str::random(10)];
 
-    $password = Str::random(10);
-    $data = ['email' => $this->faker->safeEmail(), 'password' => $password];
+    $response = $this->post(route('cms.auth.log_user'), $data);
 
-    $response = $this->post('/cms/auth/login', $data);
-
-    $response->assertStatus(302);
+    $this->checkIfSessionErrorMatchesString('usu_email', 'Este e-mail não existe em nosso sistema.');
   }
 }

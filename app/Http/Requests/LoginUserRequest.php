@@ -24,8 +24,8 @@ class LoginUserRequest extends FormRequest
   public function rules()
   {
     return [
-      'email' => 'required|email|exists:users',
-      'password' => 'required',
+      'usu_email' => 'required|email|exists:users',
+      'usu_password' => 'required',
     ];
   }
 
@@ -33,8 +33,8 @@ class LoginUserRequest extends FormRequest
   {
     return [
       '*.required' => 'Este campo é obirgatório.',
-      'email.email' => 'Por favor, digite um e-mail válido.',
-      'email.exists' => 'Este e-mail não existe em nosso sistema.',
+      'usu_email.email' => 'Por favor, digite um e-mail válido.',
+      'usu_email.exists' => 'Este e-mail não existe em nosso sistema.',
     ];
   }
 }
