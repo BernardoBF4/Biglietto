@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
    */
   public function rules()
   {
-    if ($this->__isCreateAction()) {
+    if ($this->__userIsBeingCreated()) {
       $rules = [
         'usu_email' => 'required|string|email|unique:users,usu_email',
         'usu_name' => 'required|string|max:255',
@@ -58,7 +58,7 @@ class UserRequest extends FormRequest
     ];
   }
 
-  private function __isCreateAction()
+  private function __userIsBeingCreated()
   {
     return $this->isMethod('POST');
   }
