@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-  use RefreshDatabase, WithFaker;
+  use WithFaker, RefreshDatabase;
 
   /** @test */
   public function a_user_can_access_the_login_page()
@@ -68,7 +68,7 @@ class AuthTest extends TestCase
   {
     $data = ['usu_email' => $this->faker->safeEmail(), 'usu_password' => Str::random(10)];
 
-    $response = $this->post(route('cms.auth.log_user'), $data);
+    $this->post(route('cms.auth.log_user'), $data);
 
     $this->checkIfSessionErrorMatchesString('usu_email', 'Este e-mail não existe em nosso sistema.');
   }
