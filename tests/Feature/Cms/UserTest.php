@@ -29,14 +29,7 @@ class UserTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $password = $this->faker->password(6, 12);
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-      'usu_password' => $password,
-      'usu_password_confirmation' => $password,
-    ];
+    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
     $response = $this->post(route('cms.users.store'), $user_data);
 
@@ -48,13 +41,7 @@ class UserTest extends TestCase
   {
     $this->signIn();
 
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-      'usu_password' => $this->faker->password(6, 12),
-      'usu_password_confirmation' => $this->faker->password(6, 12),
-    ];
+    $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
 
     $this->post(route('cms.users.store'), $user_data);
 
@@ -67,15 +54,8 @@ class UserTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
-    $password = $this->faker->password(6, 12);
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-      'usu_password' => $password,
-      'usu_password_confirmation' => $password,
-    ];
+    $user = User::factory()->withEncryptedPassword()->create();
+    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
@@ -87,15 +67,8 @@ class UserTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $user = User::all()->last();
-    $password = $this->faker->password(6, 12);
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-      'usu_password' => $password,
-      'usu_password_confirmation' => $password,
-    ];
+    $user = User::factory()->withEncryptedPassword()->create();
+    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id + 1]), $user_data);
 
@@ -107,12 +80,8 @@ class UserTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-    ];
+    $user = User::factory()->withEncryptedPassword()->create();
+    $user_data = User::factory()->make()->toArray();
 
     $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
@@ -124,14 +93,8 @@ class UserTest extends TestCase
   {
     $this->signIn();
 
-    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
-    $user_data = [
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->id,
-      'usu_email' => $this->faker->safeEmail(),
-      'usu_name' => $this->faker->name(),
-      'usu_password' => $this->faker->password(6, 12),
-      'usu_password_confirmation' => $this->faker->password(6, 12),
-    ];
+    $user = User::factory()->withEncryptedPassword()->create();
+    $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
 
     $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
@@ -144,7 +107,7 @@ class UserTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $users_id = User::factory(2)->withPassword($this->faker->password(6, 12))->create()->pluck('usu_id');
+    $users_id = User::factory(2)->withEncryptedPassword()->create()->pluck('usu_id');
 
     $response = $this->delete(route('cms.users.destroy', $users_id));
 
@@ -154,7 +117,7 @@ class UserTest extends TestCase
   /** @test */
   public function a_user_belongs_to_a_group()
   {
-    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
+    $user = User::factory()->withEncryptedPassword()->create();
 
     $this->assertInstanceOf(Group::class, $user->group);
   }

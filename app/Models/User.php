@@ -18,13 +18,7 @@ class User extends Authenticatable
     'usu_email',
     'usu_name',
     'usu_password',
-    'usu_token',
     'fk_groups_id',
-  ];
-
-  protected $hidden = [
-    'usu_password',
-    'usu_token',
   ];
 
   public function group()

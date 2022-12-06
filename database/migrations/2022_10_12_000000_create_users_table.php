@@ -18,7 +18,6 @@ return new class extends Migration
       $table->string('usu_name', 255);
       $table->string('usu_email')->unique();
       $table->string('usu_password');
-      $table->string('usu_token')->unique();
       $table->foreignId('fk_groups_id')->constrained('groups', 'gro_id')->nullable();
       $table->timestamps();
     });

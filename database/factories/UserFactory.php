@@ -23,28 +23,45 @@ class UserFactory extends Factory
     return [
       'usu_email' => fake()->safeEmail(),
       'usu_name' => fake()->name(),
-      'usu_token' => Hash::make(Str::random(10)),
       'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
     ];
   }
 
-  /**
-   * Indicate that the model's email address should be unverified.
-   *
-   * @return static
-   */
-  public function unverified()
+  public function withPassword()
   {
-    return $this->state(fn (array $attributes) => [
-      'usu_email_verified_at' => null,
-    ]);
+    return $this->state(function () {
+      return [
+        'usu_password' => fake()->password(6, 12),
+      ];
+    });
   }
 
-  public function withPassword($password)
+  public function withEncryptedPassword()
   {
-    return $this->state(function () use ($password) {
+    return $this->state(function () {
       return [
-        'usu_password' => bcrypt($password)
+        'usu_password' => bcrypt(fake()->password(6, 12)),
+      ];
+    });
+  }
+
+  public function withPasswordAndConfirmation()
+  {
+    return $this->state(function () {
+      $password = fake()->password(6, 12);
+      return [
+        'usu_password' => $password,
+        'usu_password_confirmation' => $password,
+      ];
+    });
+  }
+
+  public function withMismatchingPasswords()
+  {
+    return $this->state(function () {
+      return [
+        'usu_password' => fake()->password(6, 12),
+        'usu_password_confirmation' => fake()->password(6, 12),
       ];
     });
   }
