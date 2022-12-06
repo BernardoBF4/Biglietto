@@ -36,11 +36,12 @@ class UserFactory extends Factory
     });
   }
 
-  public function withEncryptedPassword()
+  public function withEncryptedPassword($password = null)
   {
-    return $this->state(function () {
+    return $this->state(function () use ($password) {
+      $password = $password ?? fake()->password(6, 12);
       return [
-        'usu_password' => bcrypt(fake()->password(6, 12)),
+        'usu_password' => bcrypt($password),
       ];
     });
   }
