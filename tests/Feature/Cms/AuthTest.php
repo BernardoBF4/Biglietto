@@ -26,7 +26,7 @@ class AuthTest extends TestCase
     $this->withoutExceptionHandling();
 
     $password = Str::random(10);
-    $user = User::factory()->withPassword($password)->create();
+    $user = User::factory()->withEncryptedPassword()->create();
     $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     $response = $this->post(route('cms.auth.log_user'), $data);
@@ -40,7 +40,7 @@ class AuthTest extends TestCase
     $this->withoutExceptionHandling();
 
     $password = Str::random(10);
-    $user = User::factory()->withPassword(Str::random(10))->create();
+    $user = User::factory()->withEncryptedPassword()->create();
     $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     $response = $this->post(route('cms.auth.log_user'), $data);
@@ -54,7 +54,7 @@ class AuthTest extends TestCase
     $this->withoutExceptionHandling();
 
     $password = Str::random(10);
-    $user = User::factory()->withPassword($password)->create();
+    $user = User::factory()->withEncryptedPassword()->create();
     $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     auth()->login($user);

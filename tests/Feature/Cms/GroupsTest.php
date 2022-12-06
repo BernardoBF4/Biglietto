@@ -118,7 +118,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function a_group_has_many_users()
   {
-    $user = User::factory()->withPassword($this->faker->password(6, 12))->create();
+    $user = User::factory()->withEncryptedPassword()->create();
 
     $group = Group::where('gro_id', $user->group->gro_id)->first();
 

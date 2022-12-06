@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
 
   public function signIn($user = null)
   {
-    $user = $user ?: User::factory()->withPassword(Str::random(10))->create();
+    $user = $user ?: User::factory()->withEncryptedPassword()->create();
     $this->actingAs($user);
 
     return $this;
