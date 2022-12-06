@@ -15,8 +15,8 @@ return new class extends Migration
   {
     Schema::create('users', function (Blueprint $table) {
       $table->id('usu_id');
-      $table->string('usu_name', 255);
       $table->string('usu_email')->unique();
+      $table->string('usu_name', 255);
       $table->string('usu_password');
       $table->foreignId('fk_groups_id')->constrained('groups', 'gro_id')->nullable();
       $table->timestamp('created_at')->useCurrent();
