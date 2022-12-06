@@ -31,7 +31,7 @@ class AuthTest extends TestCase
 
     $response = $this->post(route('cms.auth.log_user'), $data);
 
-    $response->assertRedirect(route('cms.groups.index'));
+    $this->assertEquals($user->usu_email, auth()->user()->usu_email);
   }
 
   /** @test */
