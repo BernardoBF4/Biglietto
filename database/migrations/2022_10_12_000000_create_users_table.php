@@ -19,7 +19,8 @@ return new class extends Migration
       $table->string('usu_email')->unique();
       $table->string('usu_password');
       $table->foreignId('fk_groups_id')->constrained('groups', 'gro_id')->nullable();
-      $table->timestamps();
+      $table->timestamp('created_at')->useCurrent();
+      $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
     });
   }
 
