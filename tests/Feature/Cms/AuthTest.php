@@ -25,11 +25,11 @@ class AuthTest extends TestCase
   {
     $this->withoutExceptionHandling();
 
-    $password = Str::random(10);
+    $password = $this->faker->password(6, 12);
     $user = User::factory()->withEncryptedPassword($password)->create();
-    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
+    $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
-    $response = $this->post(route('cms.auth.log_user'), $data);
+    $this->post(route('cms.auth.log_user'), $credentials);
 
     $this->assertEquals($user->usu_email, auth()->user()->usu_email);
   }
