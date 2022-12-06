@@ -18,7 +18,7 @@ return new class extends Migration
       $table->string('name', 100);
       $table->boolean('status')->nullable()->default(0);
       $table->foreignId('father_id')->nullable()->constrained('modules', 'id');
-      $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
+      $table->timestamp('created_at')->useCurrent();
       $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
     });
   }
