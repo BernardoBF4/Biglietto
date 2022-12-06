@@ -15,7 +15,7 @@ return new class extends Migration
   {
     Schema::create('lots', function (Blueprint $table) {
       $table->id('lot_id');
-      $table->boolean('lot_status');
+      $table->boolean('lot_status')->nullable()->default(0);
       $table->integer('lot_price');
       $table->foreignId('fk_tickets_id')->constrained('tickets', 'tic_id');
       $table->timestamp('created_at')->useCurrent();
