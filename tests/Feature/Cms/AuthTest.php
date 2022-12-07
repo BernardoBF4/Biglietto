@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -39,11 +38,11 @@ class AuthTest extends TestCase
   {
     $this->withoutExceptionHandling();
 
-    $password = Str::random(10);
+    $password = $this->faker->password(6, 12);
     $user = User::factory()->withEncryptedPassword()->create();
-    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
+    $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
-    $response = $this->post(route('cms.auth.log_user'), $data);
+    $response = $this->post(route('cms.auth.log_user'), $credentials);
 
     $response->assertSessionHas('response', cms_response(__('auth.error.wrong_password'), false, 400));
   }
@@ -53,12 +52,12 @@ class AuthTest extends TestCase
   {
     $this->withoutExceptionHandling();
 
-    $password = Str::random(10);
-    $user = User::factory()->withEncryptedPassword()->create();
-    $data = ['usu_email' => $user->usu_email, 'usu_password' => $password];
+    $password = $this->faker->password(6, 12);
+    $user = User::factory()->withEncryptedPassword($password)->create();
+    $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
     auth()->login($user);
-    $response = $this->post(route('cms.auth.log_user'), $data);
+    $response = $this->post(route('cms.auth.log_user'), $credentials);
 
     $response->assertSessionHas('response', cms_response(__('auth.error.already_logged'), false, 400));
   }
@@ -66,7 +65,7 @@ class AuthTest extends TestCase
   /** @test */
   public function a_user_receives_an_error_message_if_not_found()
   {
-    $data = ['usu_email' => $this->faker->safeEmail(), 'usu_password' => Str::random(10)];
+    $data = ['usu_email' => $this->faker->safeEmail(), 'usu_password' => $this->faker->password(6, 12)];
 
     $this->post(route('cms.auth.log_user'), $data);
 
