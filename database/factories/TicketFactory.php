@@ -19,4 +19,13 @@ class TicketFactory extends Factory
       'fk_events_id' => Event::factory()->create()->eve_id,
     ];
   }
+
+  public function withEvent($event_id)
+  {
+    return $this->state(function () use ($event_id) {
+      return [
+        'fk_events_id' => $event_id
+      ];
+    });
+  }
 }

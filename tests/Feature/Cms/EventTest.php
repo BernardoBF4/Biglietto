@@ -30,7 +30,7 @@ class EventTest extends TestCase
 
     $event_data = Event::factory()->make()->toArray();
 
-    $response = $this->post(route('cms.events.store', $event_data));
+    $response = $this->post(route('cms.events.store'), $event_data);
 
     $response->assertSessionHas('response', cms_response(__('event.success.create')));
   }
@@ -42,7 +42,7 @@ class EventTest extends TestCase
 
     $event_data = Event::factory()->make()->toArray();
 
-    $this->post(route('cms.events.store', $event_data));
+    $this->post(route('cms.events.store'), $event_data);
 
     $this->assertDatabaseHas('events', $event_data);
   }
@@ -54,7 +54,7 @@ class EventTest extends TestCase
 
     $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
 
-    $this->post(route('cms.events.store', $event_data));
+    $this->post(route('cms.events.store'), $event_data);
 
     $this->checkIfSessionErrorMatchesString('eve_start_datetime', 'A data de início não pode ser maior que a data de término.');
     $this->checkIfSessionErrorMatchesString('eve_end_datetime', 'A data de início não pode ser maior que a data de término.');
@@ -78,13 +78,13 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $event = Event::factory()->create()->toArray();
+    $event = Event::factory()->create();
     $event_data = Event::factory()->make()->toArray();
 
-    $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
+    $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 
     $this->assertDatabaseHas('events', $event_data);
-    $this->assertDatabaseMissing('events', $event);
+    $this->assertDatabaseMissing('events', $event->toArray());
   }
 
   /** @test */
@@ -92,10 +92,10 @@ class EventTest extends TestCase
   {
     $this->signIn();
 
-    $event = Event::factory()->create()->toArray();
+    $event = Event::factory()->create();
     $event_data = Event::factory()->withEndDateSmallerThanStartDate()->make()->toArray();
 
-    $this->patch(route('cms.events.update', $event['eve_id']), $event_data);
+    $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 
     $this->checkIfSessionErrorMatchesString('eve_start_datetime', 'A data de início não pode ser maior que a data de término.');
     $this->checkIfSessionErrorMatchesString('eve_end_datetime', 'A data de início não pode ser maior que a data de término.');
@@ -119,9 +119,9 @@ class EventTest extends TestCase
   {
     $this->withoutExceptionHandling()->signIn();
 
-    $users_id = Event::factory(2)->create()->pluck('eve_id');
+    $events_id = Event::factory(2)->create()->pluck('eve_id');
 
-    $response = $this->delete(route('cms.events.destroy', $users_id));
+    $response = $this->delete(route('cms.events.destroy', ['event' => $events_id]));
 
     $response->assertSessionHas('response', cms_response(__('event.success.delete')));
   }
@@ -129,10 +129,10 @@ class EventTest extends TestCase
   /** @test */
   public function an_event_has_many_tickets()
   {
-    $ticket = Ticket::factory()->create();
-
-    $event = Event::where('eve_id', $ticket->event->eve_id)->first();
+    $event = Event::factory()->create();
+    Ticket::factory(2)->withEvent($event->eve_id)->create();
 
     $this->assertInstanceOf(Ticket::class, $event->tickets[0]);
+    $this->assertInstanceOf(Ticket::class, $event->tickets[1]);
   }
 }
