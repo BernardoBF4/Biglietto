@@ -16,17 +16,15 @@ class GroupsTest extends TestCase
   /** @test */
   public function unauthenticated_users_are_redirected()
   {
-    $this->withoutExceptionHandling();
-
     $response = $this->get(route('cms.groups.index'));
 
     $response->assertRedirect();
   }
 
   /** @test */
-  public function a_group_can_be_created()
+  public function creating_a_group_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $group_data = Group::factory()->withModule()->make()->toArray();
 
@@ -38,7 +36,7 @@ class GroupsTest extends TestCase
   /** @test */
   public function creating_a_group_persists_its_data_to_the_database()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $group_data = Group::factory()->make()->toArray();
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
@@ -51,11 +49,23 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_group_can_be_updated()
+  public function creating_a_group_without_modules_put_an_error_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
-    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group_data = Group::factory()->make()->toArray();
+
+    $this->post(route('cms.groups.store'), $group_data);
+
+    $this->checkIfSessionErrorMatchesString('modules', 'O grupo precisa de pelo menos um módulo.');
+  }
+
+  /** @test */
+  public function updating_a_group_puts_a_success_message_on_the_session()
+  {
+    $this->signIn();
+
+    $group = Group::factory()->hasAttached(Modules::factory(), [], 'modules')->create();
     $group_data = Group::factory()->withModule()->make()->toArray();
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id]), $group_data);
@@ -64,11 +74,11 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_updating_a_group_if_it_isnt_found_an_error_is_returned()
+  public function updating_a_not_found_group_puts_an_error_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
-    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group = Group::factory()->hasAttached(Modules::factory(), [], 'modules')->create();
     $group_data = Group::factory()->withModule()->make()->toArray();
 
     $response = $this->patch(route('cms.groups.update', ['group' => $group->gro_id + 1]), $group_data);
@@ -77,11 +87,11 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function when_a_group_is_updated_its_data_is_persisted_to_the_database()
+  public function updating_a_group_persists_its_data_to_the_database_and_removes_the_old_data()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
-    $group = Group::factory()->has(Modules::factory(), 'modules')->create();
+    $group = Group::factory()->hasAttached(Modules::factory(), [], 'modules')->create();
     $group_data = Group::factory()->make()->toArray();
     $modules = ['modules' => Modules::factory(1)->create()->pluck('id')];
 
@@ -92,11 +102,11 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function groups_can_be_excluded()
+  public function deleting_groups_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
-    $groups_id = Group::factory(2)->has(Modules::factory(), 'modules')->create()->pluck('gro_id');
+    $groups_id = Group::factory(2)->hasAttached(Modules::factory(), [], 'modules')->create()->pluck('gro_id');
 
     $response = $this->delete(route('cms.groups.destroy', ['group' => $groups_id]));
 
@@ -104,24 +114,23 @@ class GroupsTest extends TestCase
   }
 
   /** @test */
-  public function a_group_cannot_be_created_without_modules()
+  public function deleting_a_group_removes_its_data_from_the_database()
   {
-    $this->signIn();
+    $this->withoutExceptionHandling()->signIn();
 
-    $group_data = Group::factory()->make()->toArray();
+    $group = Group::factory()->hasAttached(Modules::factory(), [], 'modules')->create();
 
-    $this->post(route('cms.groups.store'), $group_data);
+    $this->delete(route('cms.groups.destroy', ['group' => json_encode([$group->gro_id])]));
 
-    $this->assertEquals(session('errors')->messages()['modules'][0], 'O grupo precisa de pelo menos um módulo.');
+    $this->assertDatabaseMissing('groups', $group->toArray());
   }
 
   /** @test */
   public function a_group_has_many_users()
   {
-    $user = User::factory()->withEncryptedPassword()->create();
-
-    $group = Group::where('gro_id', $user->group->gro_id)->first();
+    $group = Group::factory()->has(User::factory(2)->withEncryptedPassword(), 'users')->create();
 
     $this->assertInstanceOf(User::class, $group->users[0]);
+    $this->assertInstanceOf(User::class, $group->users[1]);
   }
 }

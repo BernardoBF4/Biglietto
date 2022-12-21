@@ -23,7 +23,7 @@ class UserFactory extends Factory
     return [
       'usu_email' => fake()->safeEmail(),
       'usu_name' => fake()->name(),
-      'fk_groups_id' => Group::factory()->has(Modules::factory(), 'modules')->create()->gro_id,
+      'fk_groups_id' => Group::factory()->hasAttached(Modules::factory(), [], 'modules')->create()->gro_id,
     ];
   }
 

@@ -12,113 +12,111 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
 
-  use WithFaker, RefreshDatabase;
+    use WithFaker, RefreshDatabase;
 
-  /** @test */
-  public function unauthenticated_users_are_redirected()
-  {
-    $this->withoutExceptionHandling();
+    /** @test */
+    public function unauthenticated_users_are_redirected()
+    {
+        $response = $this->get(route('cms.users.index'));
 
-    $response = $this->get(route('cms.users.index'));
+        $response->assertRedirect();
+    }
 
-    $response->assertRedirect();
-  }
+    /** @test */
+    public function creating_a_user_puts_a_success_message_on_the_session()
+    {
+        $this->signIn();
 
-  /** @test */
-  public function a_user_can_be_created()
-  {
-    $this->withoutExceptionHandling()->signIn();
+        $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
-    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
+        $response = $this->post(route('cms.users.store'), $user_data);
 
-    $response = $this->post(route('cms.users.store'), $user_data);
+        $response->assertSessionHas('response', cms_response(__('user.success.create')));
+    }
 
-    $response->assertSessionHas('response', cms_response(__('user.success.create')));
-  }
+    /** @test */
+    public function creating_a_user_with_mismatching_passwords_puts_errors_messages_on_the_session()
+    {
+        $this->signIn();
 
-  /** @test */
-  public function if_passwords_dont_match_when_creating_a_user_an_error_is_returned()
-  {
-    $this->signIn();
+        $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
 
-    $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
+        $this->post(route('cms.users.store'), $user_data);
 
-    $this->post(route('cms.users.store'), $user_data);
+        $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
+        $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
+    }
 
-    $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
-    $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
-  }
+    /** @test */
+    public function updating_a_user_puts_a_success_message_on_the_session()
+    {
+        $this->withoutExceptionHandling()->signIn();
 
-  /** @test */
-  public function a_user_can_be_updated()
-  {
-    $this->withoutExceptionHandling()->signIn();
+        $user = User::factory()->withEncryptedPassword()->create();
+        $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
-    $user = User::factory()->withEncryptedPassword()->create();
-    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
+        $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
+        $response->assertSessionHas('response', cms_response(__('user.success.update')));
+    }
 
-    $response->assertSessionHas('response', cms_response(__('user.success.update')));
-  }
+    /** @test */
+    public function updating_a_not_found_user_puts_an_error_message_on_the_session()
+    {
+        $this->withoutExceptionHandling()->signIn();
 
-  /** @test */
-  public function if_the_user_isnt_found_an_error_is_returned()
-  {
-    $this->withoutExceptionHandling()->signIn();
+        $user = User::factory()->withEncryptedPassword()->create();
+        $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
 
-    $user = User::factory()->withEncryptedPassword()->create();
-    $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
+        $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id + 1]), $user_data);
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id + 1]), $user_data);
+        $response->assertSessionHas('response', cms_response(__('user.error.not_found'), false, 400));
+    }
 
-    $response->assertSessionHas('response', cms_response(__('user.error.not_found'), false, 400));
-  }
+    /** @test */
+    public function updating_a_user_without_updating_its_password_puts_a_success_message_on_the_session()
+    {
+        $this->withoutExceptionHandling()->signIn();
 
-  /** @test */
-  public function a_user_can_be_updated_without_updating_its_password()
-  {
-    $this->withoutExceptionHandling()->signIn();
+        $user = User::factory()->withEncryptedPassword()->create();
+        $user_data = User::factory()->make()->toArray();
 
-    $user = User::factory()->withEncryptedPassword()->create();
-    $user_data = User::factory()->make()->toArray();
+        $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $response = $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
+        $response->assertSessionHas('response', cms_response(__('user.success.update')));
+    }
 
-    $response->assertSessionHas('response', cms_response(__('user.success.update')));
-  }
+    /** @test */
+    public function updating_a_user_with_mismatching_passwords_puts_error_messages_on_the_session()
+    {
+        $this->signIn();
 
-  /** @test */
-  public function if_passwords_dont_match_when_updating_a_user_an_error_is_returned()
-  {
-    $this->signIn();
+        $user = User::factory()->withEncryptedPassword()->create();
+        $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
 
-    $user = User::factory()->withEncryptedPassword()->create();
-    $user_data = User::factory()->withMismatchingPasswords()->make()->toArray();
+        $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
 
-    $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
+        $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
+        $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
+    }
 
-    $this->checkIfSessionErrorMatchesString('usu_password', 'A senha e confirmação de senha não são iguais.');
-    $this->checkIfSessionErrorMatchesString('usu_password_confirmation', 'A senha e confirmação de senha não são iguais.');
-  }
+    /** @test */
+    public function deleting_users_puts_a_success_message_on_the_session()
+    {
+        $this->withoutExceptionHandling()->signIn();
 
-  /** @test */
-  public function users_can_be_excluded()
-  {
-    $this->withoutExceptionHandling()->signIn();
+        $users_id = User::factory(2)->withEncryptedPassword()->create()->pluck('usu_id');
 
-    $users_id = User::factory(2)->withEncryptedPassword()->create()->pluck('usu_id');
+        $response = $this->delete(route('cms.users.destroy', $users_id));
 
-    $response = $this->delete(route('cms.users.destroy', $users_id));
+        $response->assertSessionHas('response', cms_response(__('user.success.delete')));
+    }
 
-    $response->assertSessionHas('response', cms_response(__('user.success.delete')));
-  }
+    /** @test */
+    public function a_user_belongs_to_a_group()
+    {
+        $user = User::factory()->withEncryptedPassword()->create();
 
-  /** @test */
-  public function a_user_belongs_to_a_group()
-  {
-    $user = User::factory()->withEncryptedPassword()->create();
-
-    $this->assertInstanceOf(Group::class, $user->group);
-  }
+        $this->assertInstanceOf(Group::class, $user->group);
+    }
 }

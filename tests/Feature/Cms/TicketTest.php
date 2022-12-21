@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Cms;
 
+use App\Models\Event;
 use App\Models\Lot;
 use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,17 +16,15 @@ class TicketTest extends TestCase
   /** @test */
   public function unauthenticated_users_are_redirected()
   {
-    $this->withoutExceptionHandling();
-
     $response = $this->get(route('cms.tickets.index'));
 
     $response->assertRedirect();
   }
 
   /** @test */
-  public function a_ticket_can_be_created()
+  public function creating_a_ticket_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket_data = Ticket::factory()->make()->toArray();
 
@@ -35,9 +34,9 @@ class TicketTest extends TestCase
   }
 
   /** @test */
-  public function when_a_ticket_is_created_its_data_is_persisted_to_the_database()
+  public function creating_a_ticket_persists_its_data_to_the_database()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket_data = Ticket::factory()->make()->toArray();
 
@@ -47,9 +46,9 @@ class TicketTest extends TestCase
   }
 
   /** @test */
-  public function a_ticket_can_be_updated()
+  public function updating_a_ticket_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket = Ticket::factory()->create();
     $ticket_data = Ticket::factory()->make()->toArray();
@@ -62,7 +61,7 @@ class TicketTest extends TestCase
   /** @test */
   public function updating_a_ticket_persists_its_data_to_the_database_and_removes_the_old_data()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket = Ticket::factory()->create();
     $ticket_data = Ticket::factory()->make()->toArray();
@@ -74,9 +73,9 @@ class TicketTest extends TestCase
   }
 
   /** @test */
-  public function when_updating_a_ticket_if_not_found_an_error_is_returned()
+  public function updating_a_not_found_ticket_puts_an_error_message_in_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket = Ticket::factory()->create();
     $ticket_data = Ticket::factory()->make()->toArray();
@@ -87,9 +86,9 @@ class TicketTest extends TestCase
   }
 
   /** @test */
-  public function multiple_tickets_can_be_deleted()
+  public function deleting_tickets_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $ticket_ids = Ticket::factory(2)->create()->pluck('tic_id');
 
@@ -99,14 +98,31 @@ class TicketTest extends TestCase
   }
 
   /** @test */
+  public function deleting_tickets_removes_their_data_from_the_database()
+  {
+    $this->signIn();
+
+    $tickets = Ticket::factory()->create();
+
+    $this->delete(route('cms.tickets.destroy', ['ticket' => $tickets->pluck('tic_id')]));
+
+    $this->assertDatabaseMissing('tickets', $tickets->toArray());
+  }
+
+  /** @test */
   public function a_ticket_can_have_multiple_lots()
   {
-    $this->withoutExceptionHandling()->signIn();
-
-    $ticket = Ticket::factory()->create();
-    Lot::factory(2)->withTicket($ticket->tic_id)->create();
+    $ticket = Ticket::factory()->has(Lot::factory(2), 'lots')->create();
 
     $this->assertInstanceOf(Lot::class, $ticket->lots[0]);
     $this->assertInstanceOf(Lot::class, $ticket->lots[1]);
+  }
+
+  /** @test */
+  public function a_ticket_belongs_to_an_event()
+  {
+    $ticket = Ticket::factory()->for(Event::factory(), 'event')->create();
+
+    $this->assertInstanceOf(Event::class, $ticket->event);
   }
 }

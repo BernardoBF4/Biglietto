@@ -4,7 +4,6 @@ namespace Tests\Feature\Cms;
 
 use App\Models\Event;
 use App\Models\Ticket;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,17 +15,15 @@ class EventTest extends TestCase
   /** @test */
   public function unauthenticated_users_are_redirected()
   {
-    $this->withoutExceptionHandling();
-
     $response = $this->get(route('cms.events.index'));
 
     $response->assertRedirect();
   }
 
   /** @test */
-  public function an_event_can_be_created()
+  public function creating_an_event_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $event_data = Event::factory()->make()->toArray();
 
@@ -36,9 +33,9 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function when_an_event_is_created_its_data_is_persited_to_the_database()
+  public function creating_an_event_persists_its_data_to_the_database()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $event_data = Event::factory()->make()->toArray();
 
@@ -48,7 +45,7 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function an_event_cannot_be_created_with_end_date_being_smaller_than_start_date()
+  public function creating_an_event_with_start_date_bigger_than_end_date_puts_an_error_message_in_the_session()
   {
     $this->signIn();
 
@@ -61,9 +58,9 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function an_event_can_be_updated()
+  public function updating_an_event_puts_a_success_message_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $event = Event::factory()->create();
     $event_data = Event::factory()->make()->toArray();
@@ -74,9 +71,9 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function when_an_event_is_updated_its_data_is_persisted_to_the_database()
+  public function updating_an_event_persists_its_data_to_the_database_and_removes_the_old_data()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $event = Event::factory()->create();
     $event_data = Event::factory()->make()->toArray();
@@ -88,7 +85,7 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function an_event_cannot_be_updated_with_end_date_being_smaller_than_start_date()
+  public function updating_an_event_with_start_date_bigger_than_end_date_puts_an_error_message_in_the_session()
   {
     $this->signIn();
 
@@ -102,9 +99,9 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function when_updating_an_event_if_not_found_an_error_is_returned()
+  public function updating_a_not_found_event_puts_an_error_on_the_session()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $event = Event::factory()->create();
     $event_data = Event::factory()->make()->toArray();
@@ -115,9 +112,9 @@ class EventTest extends TestCase
   }
 
   /** @test */
-  public function events_can_be_excluded()
+  public function deleting_an_event_puts_a_success_message_on_the_database()
   {
-    $this->withoutExceptionHandling()->signIn();
+    $this->signIn();
 
     $events_id = Event::factory(2)->create()->pluck('eve_id');
 
@@ -127,10 +124,21 @@ class EventTest extends TestCase
   }
 
   /** @test */
+  public function deleting_an_event_removes_its_data_from_the_database()
+  {
+    $this->signIn();
+
+    $event = Event::factory()->create();
+
+    $this->delete(route('cms.events.destroy', ['event' => $event->pluck('eve_id')]));
+
+    $this->assertDatabaseMissing('events', $event->toArray());
+  }
+
+  /** @test */
   public function an_event_has_many_tickets()
   {
-    $event = Event::factory()->create();
-    Ticket::factory(2)->withEvent($event->eve_id)->create();
+    $event = Event::factory()->has(Ticket::factory(2), 'tickets')->create();
 
     $this->assertInstanceOf(Ticket::class, $event->tickets[0]);
     $this->assertInstanceOf(Ticket::class, $event->tickets[1]);
