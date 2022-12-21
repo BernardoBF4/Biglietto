@@ -76,6 +76,25 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function updating_a_user_persists_its_data_to_the_database_and_removes_the_old_data()
+    {
+        $this->signIn();
+
+        $user = User::factory()->withEncryptedPassword()->create();
+        $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
+
+        unset($user_data['usu_password_confirmation']);
+        unset($user_data['usu_password']);
+        unset($user['usu_password_confirmation']);
+        unset($user['usu_password']);
+
+        $this->patch(route('cms.users.update', ['user' => $user->usu_id]), $user_data);
+
+        $this->assertDatabaseHas('users', $user_data);
+        $this->assertDatabaseMissing('users', $user->toArray());
+    }
+
+    /** @test */
     public function updating_a_not_found_user_puts_an_error_message_on_the_session()
     {
         $this->signIn();
