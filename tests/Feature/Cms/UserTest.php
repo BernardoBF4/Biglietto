@@ -35,6 +35,21 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function creating_a_user_persists_its_data_to_the_database()
+    {
+        $this->signIn();
+
+        $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
+
+        $this->post(route('cms.users.store'), $user_data);
+
+        unset($user_data['usu_password_confirmation']);
+        unset($user_data['usu_password']);
+
+        $this->assertDatabaseHas('users', $user_data);
+    }
+
+    /** @test */
     public function creating_a_user_with_mismatching_passwords_puts_errors_messages_on_the_session()
     {
         $this->signIn();
