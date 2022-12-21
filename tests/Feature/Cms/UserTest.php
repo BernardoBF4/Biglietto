@@ -50,7 +50,7 @@ class UserTest extends TestCase
     /** @test */
     public function updating_a_user_puts_a_success_message_on_the_session()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $user = User::factory()->withEncryptedPassword()->create();
         $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
@@ -63,7 +63,7 @@ class UserTest extends TestCase
     /** @test */
     public function updating_a_not_found_user_puts_an_error_message_on_the_session()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $user = User::factory()->withEncryptedPassword()->create();
         $user_data = User::factory()->withPasswordAndConfirmation()->make()->toArray();
@@ -76,7 +76,7 @@ class UserTest extends TestCase
     /** @test */
     public function updating_a_user_without_updating_its_password_puts_a_success_message_on_the_session()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $user = User::factory()->withEncryptedPassword()->create();
         $user_data = User::factory()->make()->toArray();
@@ -103,7 +103,7 @@ class UserTest extends TestCase
     /** @test */
     public function deleting_users_puts_a_success_message_on_the_session()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $users_id = User::factory(2)->withEncryptedPassword()->create()->pluck('usu_id');
 
