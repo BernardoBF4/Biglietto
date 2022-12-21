@@ -147,6 +147,21 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function deleting_a_user_removes_its_data_from_the_database()
+    {
+        $this->signIn();
+
+        $user = User::factory()->withEncryptedPassword()->create();
+
+        $this->delete(route('cms.users.destroy', $user->pluck('usu_id')));
+
+        unset($user['usu_password_confirmation']);
+        unset($user['usu_password']);
+
+        $this->assertDatabaseMissing('users', $user->toArray());
+    }
+
+    /** @test */
     public function a_user_belongs_to_a_group()
     {
         $user = User::factory()->withEncryptedPassword()->create();
