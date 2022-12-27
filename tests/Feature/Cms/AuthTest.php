@@ -63,4 +63,18 @@ class AuthTest extends TestCase
 
         $this->checkIfSessionErrorMatchesString('usu_email', 'Este e-mail não existe em nosso sistema.');
     }
+
+    /** @test */
+    public function a_user_is_logged_out_after_two_hours()
+    {
+        $password = $this->faker->password(6, 12);
+        $user = User::factory()->withEncryptedPassword($password)->create();
+        $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
+
+        $this->travel(121)->minutes();
+        $this->post(route('cms.auth.log_user'), $credentials);
+        $this->travelBack();
+
+        $this->assertEquals(null, auth()->user());
+    }
 }

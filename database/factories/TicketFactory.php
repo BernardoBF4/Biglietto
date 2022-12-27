@@ -10,13 +10,22 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TicketFactory extends Factory
 {
-  public function definition()
-  {
-    return [
-      'tic_title' => fake()->word(),
-      'tic_price' => fake()->randomNumber(),
-      'tic_status' => fake()->boolean(),
-      'fk_events_id' => Event::factory()->create()->eve_id,
-    ];
-  }
+    public function definition()
+    {
+        return [
+            'tic_title' => fake()->word(),
+            'tic_price' => fake()->randomNumber(),
+            'tic_status' => fake()->boolean(),
+            'fk_events_id' => Event::factory()->create()->eve_id,
+        ];
+    }
+
+    public function active()
+    {
+        return $this->state(function () {
+            return [
+                'tic_status' => true,
+            ];
+        });
+    }
 }

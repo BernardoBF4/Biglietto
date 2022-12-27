@@ -143,4 +143,17 @@ class EventTest extends TestCase
         $this->assertInstanceOf(Ticket::class, $event->tickets[0]);
         $this->assertInstanceOf(Ticket::class, $event->tickets[1]);
     }
+
+    /** @test */
+    public function inactivating_an_event_inactivates_its_children_too()
+    {
+        $this->signIn();
+
+        $event = Event::factory()->has(Ticket::factory()->active(), 'tickets')->create();
+        $event_data = Event::factory()->inactive()->make()->toArray();
+
+        $this->patch(route('cms.events.update', $event->eve_id), $event_data);
+
+        $this->assertEquals(false, $event->tickets[0]->tic_status);
+    }
 }
