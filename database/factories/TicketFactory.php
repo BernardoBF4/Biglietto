@@ -20,11 +20,11 @@ class TicketFactory extends Factory
         ];
     }
 
-    public function active()
+    public function withStatus($status)
     {
-        return $this->state(function () {
+        return $this->state(function () use ($status) {
             return [
-                'tic_status' => true,
+                'tic_status' => $status,
             ];
         });
     }

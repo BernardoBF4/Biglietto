@@ -126,12 +126,16 @@ class EventTest extends TestCase
     /** @test */
     public function deleting_an_event_removes_its_data_from_the_database()
     {
+        // Configurações
         $this->signIn();
 
+        // Prepara variáveis
         $event = Event::factory()->create();
 
+        // Faz as operações
         $this->delete(route('cms.events.destroy', ['event' => $event->pluck('eve_id')]));
 
+        // Faz a asserção
         $this->assertDatabaseMissing('events', $event->toArray());
     }
 
@@ -149,8 +153,8 @@ class EventTest extends TestCase
     {
         $this->signIn();
 
-        $event = Event::factory()->has(Ticket::factory()->active(), 'tickets')->create();
-        $event_data = Event::factory()->inactive()->make()->toArray();
+        $event = Event::factory()->has(Ticket::factory()->withStatus(true), 'tickets')->create();
+        $event_data = Event::factory()->withStatus(false)->make()->toArray();
 
         $this->patch(route('cms.events.update', $event->eve_id), $event_data);
 

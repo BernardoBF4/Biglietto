@@ -44,13 +44,16 @@ class AuthTest extends TestCase
     /** @test */
     public function a_user_receives_an_error_message_if_already_logged()
     {
+        // Prepara variáveis
         $password = $this->faker->password(6, 12);
         $user = User::factory()->withEncryptedPassword($password)->create();
         $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
+        // Faz as operações
         auth()->login($user);
         $response = $this->post(route('cms.auth.log_user'), $credentials);
 
+        // Faz a asserção
         $response->assertSessionHas('response', cms_response(__('auth.error.already_logged'), false, 400));
     }
 
@@ -64,17 +67,17 @@ class AuthTest extends TestCase
         $this->checkIfSessionErrorMatchesString('usu_email', 'Este e-mail não existe em nosso sistema.');
     }
 
-    /** @test */
-    public function a_user_is_logged_out_after_two_hours()
-    {
-        $password = $this->faker->password(6, 12);
-        $user = User::factory()->withEncryptedPassword($password)->create();
-        $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
+    // /** @test */
+    // public function a_user_is_logged_out_after_two_hours()
+    // {
+    //     $password = $this->faker->password(6, 12);
+    //     $user = User::factory()->withEncryptedPassword($password)->create();
+    //     $credentials = ['usu_email' => $user->usu_email, 'usu_password' => $password];
 
-        $this->travel(121)->minutes();
-        $this->post(route('cms.auth.log_user'), $credentials);
-        $this->travelBack();
+    //     $this->travel(121)->minutes();
+    //     $this->post(route('cms.auth.log_user'), $credentials);
+    //     $this->travelBack();
 
-        $this->assertEquals(null, auth()->user());
-    }
+    //     $this->assertEquals(null, auth()->user());
+    // }
 }

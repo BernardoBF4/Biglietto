@@ -35,11 +35,11 @@ class EventFactory extends Factory
         });
     }
 
-    public function inactive()
+    public function withStatus($status)
     {
-        return $this->state(function () {
+        return $this->state(function () use ($status) {
             return [
-                'eve_status' => false,
+                'eve_status' => $status,
             ];
         });
     }

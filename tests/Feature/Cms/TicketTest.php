@@ -125,4 +125,17 @@ class TicketTest extends TestCase
 
         $this->assertInstanceOf(Event::class, $ticket->event);
     }
+
+    // /** @test */
+    // public function activating_a_ticket_activates_its_parent()
+    // {
+    //     $this->signIn();
+
+    //     $ticket = Ticket::factory()->for(Event::factory()->withStatus(false), 'event')->withStatus(false)->create();
+    //     $ticket_data = Ticket::factory()->withStatus(false)->make()->toArray();
+
+    //     $this->patch(route('cms.tickets.update', ['ticket' => $ticket->tic_id]), $ticket_data);
+
+    //     $this->assertEquals(true, $ticket->event->eve_status);
+    // }
 }
