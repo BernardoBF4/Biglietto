@@ -21,8 +21,6 @@ class TicketService implements CRUD
             $ticket = $this->__findOrFail($id);
             $ticket->update($data);
 
-            $this->activateParentOf($ticket);
-
             return cms_response(__('ticket.success.update'));
         } catch (\Throwable $th) {
             return cms_response($th->getMessage(), false, 400);
@@ -42,12 +40,5 @@ class TicketService implements CRUD
             return $event;
         }
         throw new Exception(__('ticket.error.not_found'));
-    }
-
-    private function activateParentOf($ticket)
-    {
-        // echo $ticket->event->eve_status;
-        $ticket->event()->update(['eve_status' => true]);
-        // dd($ticket->event->eve_status);
     }
 }
